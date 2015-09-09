@@ -1,0 +1,3608 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<Session xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>0</Code>
+  <Title>Parsec</Title>
+  <Note>Server=WAR05110009\SQLEXPRESS;
+Integrated Security=SSPI; Persist Security Info=false;
+
+Server=SCMA-SRV-BS25\PARSECDB;
+uid=sa; pwd=parsec;
+Server=SCMA-SRV-BY09\PARSECDB;
+</Note>
+  <DBConnection>
+	Provider=SQLNCLI;
+	DataBase=Parsec3;
+	Server=LGSCMA;
+	uid=sa; pwd=parsec;
+	Connect Timeout=90;
+</DBConnection>
+  <ParamBegDelim>#?</ParamBegDelim>
+  <ParamEndDelim>?#</ParamEndDelim>
+  <Hash>eeb528fb4624092c109330428f88663c</Hash>
+  <ImagePath />
+  <ImageName />
+  <Params />
+  <Queries>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\COUNT records in all tables</Name>
+      <DateCreate>2010-06-02T11:00:02.8954511+03:00</DateCreate>
+      <DateLastModified>2010-06-01T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>DECLARE tables_cursor CURSOR
+   FOR
+   SELECT name FROM sysobjects WHERE type = 'U'
+OPEN tables_cursor
+DECLARE @tablename sysname
+FETCH NEXT FROM tables_cursor INTO @tablename
+	WHILE (@@FETCH_STATUS &lt;&gt; -1)
+	BEGIN
+	   /* A @@FETCH_STATUS of -2 means that the row has been deleted.
+	   There is no need to test for this because this loop drops all
+	   user-defined tables.   */
+	   EXEC ('SELECT '''+@tablename+''',  COUNT(*) FROM ' + @tablename)
+	   FETCH NEXT FROM tables_cursor INTO @tablename
+	END
+
+DEALLOCATE tables_cursor
+
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Depart</Name>
+      <DateCreate>2010-06-03T15:34:25.0180041+03:00</DateCreate>
+      <DateLastModified>2010-08-30T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT 
+	--ISNULL(CAST(DP.ID_DEP AS varchar(10))+'~', '')+CAST(DC.ID_DEP AS varchar(10)) AS aPath, 
+	--DP.DeptName, 
+	DC.* 
+FROM 
+	Depart AS DC 
+	--	LEFT JOIN Depart AS DP ON DC.Parent_ID=DP.ID_DEP
+ORDER BY 
+	1</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Dep-Dep</Name>
+      <DateCreate>2010-08-31T09:22:12.266373+03:00</DateCreate>
+      <DateLastModified>2010-08-30T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>
+SELECT D1.ID_DEP AS DD 
+	FROM Depart AS D1 
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D2.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D3.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D4.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D5.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+	--WHERE D1.ID_DEP = 47
+SELECT D6.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+		INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+	--WHERE D1.ID_DEP = 47
+SELECT D7.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+		INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+		INNER JOIN Depart AS D7 ON D6.ID_DEP=D7.Parent_ID
+	--WHERE D1.ID_DEP = 47
+
+
+
+
+/*
+SELECT 
+	ID_DEP)))))) AS DD
+	
+	,D7.ID_DEP 
+	,D6.ID_DEP
+	,D5.ID_DEP
+	,D4.ID_DEP
+	,D3.ID_DEP
+	,D2.ID_DEP 
+	,D1.ID_DEP
+	
+FROM Depart AS D1 
+	LEFT JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+	LEFT JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+	LEFT JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+	LEFT JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+	LEFT JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+	LEFT JOIN Depart AS D7 ON D6.ID_DEP=D7.Parent_ID
+WHERE
+	D1.ID_DEP = 47
+	
+ORDER BY 1
+*/</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Doors</Name>
+      <DateCreate>2010-06-03T08:53:31.2487447+03:00</DateCreate>
+      <DateLastModified>2010-06-02T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT [ID_DOOR]
+      ,[ADDRESS_ID]
+      ,[AreaName]
+      ,[DoorDescriptor]
+      ,[ContrEnabled]
+      ,[LockTime]
+      ,[DoorOpenTime]
+      ,[ExitTime]
+      ,[AlarmTime]
+      ,[ReleDelay]
+      ,[ReleTime]
+      ,[ReleTypeLatch]
+      ,[HasSecondReader]
+      ,[HasLockSwitch]
+      ,[HasRTESwitch]
+      ,[SoundIfDoorOpen]
+      ,[HasDoorContact]
+      ,[DoorAlarmNoArmed]
+      ,[ResetLockByDC]
+      ,[CheckAUXInput]
+      ,[ReleOnAlarm]
+      ,[ReleOnDoorForced]
+      ,[ReleOnNoEntry]
+      ,[ReleOnEntry]
+      ,[ReleOnExit]
+      ,[ReleOnLineWork]
+      ,[OnCardLed]
+      ,[OnCardBeep]
+      ,[AuxHas4State]
+      ,[DCHas4State]
+      ,[PowerLED]
+      ,[RealAccess]
+      ,[GraphPlan]
+      ,[OperInstruction]
+      ,[AutoClose]
+      ,[SoundFileName]
+      ,[GraphPlanLow]
+      ,[GraphPlanHigh]
+      ,[Turnstile]
+      ,[Perimeter]
+      ,[TimeInSec]
+      ,[APB_Enabled]
+      ,[ReleExtraType]
+      ,[HasExternalReader]
+      ,[APBinOffLine]
+      ,[ContrType]
+      ,[KSound]
+      ,[KLight]
+      ,[KBlocking]
+      ,[KLightTime]
+      ,[KOffTime]
+      ,[KConfig]
+      ,[CheckAUXInput2]
+      ,[AuxHas4State2]
+      ,[AlarmSensor24h]
+      ,[RegistrationMode]
+      ,[HasDRTESwitch]
+      ,[HasCardRead]
+      ,[CardBox]
+      ,[Deleted]
+      ,[LastUpdate]
+      ,[PhoneNumber]
+      ,[CardRecieverMode]
+  FROM [ParsecDB].[dbo].[Doors]
+  </Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Personel</Name>
+      <DateCreate>2010-06-02T12:56:01.7525553+03:00</DateCreate>
+      <DateLastModified>2010-08-29T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT * 
+FROM Personel</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Tables</Name>
+      <DateCreate>2010-06-02T10:43:45.4476455+03:00</DateCreate>
+      <DateLastModified>2010-06-01T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT * 
+FROM dbo.sysobjects
+WHERE
+	xtype = 'U'
+ORDER BY
+	name
+	</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\TransDesc</Name>
+      <DateCreate>2010-06-04T11:06:13.2969542+03:00</DateCreate>
+      <DateLastModified>2010-06-03T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT * FROM TransDesc</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\TransLog</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2010-06-07T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SET dateformat dmy
+
+SELECT 
+	[ID_TRAN]
+	,CONVERT(varchar(50), [TranDateTime], 121) AS TranDateTime
+	,[TranCode]
+	,[IsAlarm]
+	,[TranDesc]
+	,[TranArea]
+	,[TranUser]
+	,[TranCtrlID]
+	,[TranUserID]
+	,[TranOperID]
+	,[Param1]
+	,[Param2]
+	,[OperDateTime]
+	,[Arch_ID]
+FROM 
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+#?pFltUser?#
+#?pFltLock?#
+--	AND TranCode IN (32,33,34)
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с (&gt;=)</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>08.06.2010</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>до (&lt;)</Title>
+          <Name>pToDate</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>09.06.2010</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>User</Title>
+          <Name>pFltUser</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:ВСЕ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'AND TranUserID = '+CAST(TranUserID AS varchar(8)),
+	TranUser
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>8</Number>
+          <Title>Lock</Title>
+          <Name>pFltLock</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'AND TranCtrlID = '+CAST(TranCtrlID AS varchar(25)),
+	TranArea
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+ORDER BY 2
+</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Input_Output</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2015-08-07T00:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+SET dateformat dmy
+
+DECLARE @BWDay AS varchar(10), @FWDay AS varchar(10)
+DECLARE @CriticalPeriodIn int, @CriticalPeriodOut int
+DECLARE @WDRangeSec int
+
+SET @BWDay = ' 09:00:00' -- начало рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @FWDay = ' 18:00:00' -- окончание рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @CriticalPeriodIn = 3600 -- интервал времени (сек.) считающийся опозданием прихода
+SET @CriticalPeriodOut = 3600 -- интервал времени (сек.) считающийся ранним уходом
+SET @WDRangeSec = 9*3600 -- продолжительность рабочего дня (сек.)
+
+DECLARE  @TInOut table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+DECLARE  @TInOutWDE table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255), aWDay int, aDelayIn int, aEarlyOut int)
+DECLARE @TSumCountDE table
+	(aUserID int, aUser varchar(255)
+	,aSumWDay int, aCountWDay int
+	,aSumDelayIn int, aCountDelayIn int
+	,aSumEarlyOut int, aCountEarlyOut int)
+	
+INSERT @TInOut
+SELECT 
+	CONVERT(varchar(20), TranDateTime, 104)
+	,MIN(TranDateTime)
+	,MAX(TranDateTime)
+	,TranUserID
+	,TranUser
+FROM 
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+	#?pFltUser?#
+GROUP BY 
+	CONVERT(varchar(20), TranDateTime, 104),TranUserID,TranUser
+
+INSERT @TInOutWDE
+SELECT 
+	aDate
+	,aTimeIn
+	,aTimeOut
+	,aUserID, aUser
+	,DATEDIFF(s, aTimeIn, aTimeOut) AS aWDay
+	,CASE 
+		WHEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &gt; 0 AND DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &lt; @CriticalPeriodIn
+			THEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn)
+		ELSE null	
+	  END AS aDelayIn
+	,CASE 
+		WHEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &gt; 0 AND DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &lt; @CriticalPeriodOut
+			THEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime))
+		ELSE null	
+	  END AS aEarlyOut
+FROM
+	@TInOut
+
+	
+SELECT 
+	aUserID, aUser
+	,aDate
+	,CONVERT(varchar(50), aTimeIn, 120)
+	,CONVERT(varchar(50), aTimeOut, 120)
+	,aWDay
+	,aDelayIn
+	,aEarlyOut
+FROM
+	@TInOutWDE
+
+
+INSERT @TSumCountDE	
+SELECT 
+	aUserID, aUser
+	,ISNULL(SUM(aWDay), 0)
+	,ISNULL(COUNT(aWDay), 0)
+	,ISNULL(SUM(aDelayIn), 0)
+	,ISNULL(COUNT(aDelayIn), 0)
+	,ISNULL(SUM(aEarlyOut), 0)
+	,ISNULL(COUNT(aEarlyOut), 0)
+FROM
+	@TInOutWDE
+GROUP BY aUserID, aUser
+
+SELECT
+	aUserID, aUser
+	-- Кол-во приходов на работу
+	,aCountWDay 
+	-- Суммарное раб. время за месяц
+	,CAST(CAST(aSumWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumWDay%3600)/60 as int) as varchar(8))+' мин.' AS aWHourMinute
+	-- Отклонение от норматива
+	,CASE WHEN (aSumWDay-@WDRangeSec*aCountWDay) &gt; 0 THEN '' ELSE '-' END	
+		+ CAST(CAST(ABS(aSumWDay-@WDRangeSec*aCountWDay)/3600 as int) as varchar(8))+' ч., '+CAST(CAST((ABS(aSumWDay-@WDRangeSec*aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWВDifHourMinute 
+	-- Средняя продолжительность раб.дня
+	,CAST(CAST(aSumWDay/aCountWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST(((aSumWDay/aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWAvgHourMinute
+	-- Несвоевременный приход кол-во
+	,aCountDelayIn
+	-- Несвоевременный приход сумм.время
+	,CAST(CAST(aSumDelayIn/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumDelayIn%3600)/60 as int) as varchar(8))+' мин.' AS aDelayHourMinute
+	-- Несвоевременный уход кол-во
+	,aCountEarlyOut
+	-- Несвоевременный уход сумм.время
+	,CAST(CAST(aSumEarlyOut/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumEarlyOut%3600)/60 as int) as varchar(8))+' мин.' AS aEarlyHourMinute
+FROM 
+	@TSumCountDE</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с (&gt;=)</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.01.2009</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>до (&lt;)</Title>
+          <Name>pToDate</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>31.12.2009</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>User</Title>
+          <Name>pFltUser</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'AND TranUser LIKE '''+TranUser+'''',
+	TranUser
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Test\Domain_member and Person</Name>
+      <DateCreate>2015-08-25T15:20:06.8154296+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT 
+* 
+FROM 
+[Parsec3].dbo.[Domain_Membership] as DM
+INNER JOIN [Parsec3].dbo.[IDENTIFIER] as ID ON ID.CODE = DM.CODE AND ID.PIN = DM.PIN
+INNER JOIN [Parsec3].dbo.[Person] as PP ON PP.Pers_ID = ID.PERS_ID </Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Test\Новый запрос 19</Name>
+      <DateCreate>2015-08-11T16:50:06.6035157+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+DECLARE @dtFrom datetime
+DECLARE @dtTo datetime
+--SET @dtFrom = #pDateFrom?#
+--SET @dtTo = #pDateTo?#
+SET @dtFrom = #?pDateFrom?#
+SET @dtTo = #?pDateTo?#
+
+DECLARE @TINOUT TABLE(
+					aID int, 
+					aID2 uniqueidentifier, 
+					aMask int, 
+					aTranTypeID int, 
+					aTranDescription varchar(255), 
+					aUsrID uniqueidentifier, 
+					aPerson varchar(255), 
+					aTranDate datetime, 
+					aTranDateStr varchar(255), 
+					aCompID uniqueidentifier, 
+					aComp1 varchar(255), aComp2 varchar(255))
+INSERT INTO @TINOUT						
+SELECT
+PTTL.rid as aID, 
+PTTL.TRAN_ID as aID2, 
+PTT.TRANCLASS_MASK as aMask, 
+PTTL.TRANTYPE_ID as aTranTypeID, 
+PTD.TRANTYPE_DESC as aTranDescription, 
+PTTL.USR_ID as aUsrID, 
+PP.LAST_NAME as aPerson, 
+DATEADD(hour, 3, PTTL.TRAN_DATE) as aTranDate, 
+CONVERT(varchar(10), DATEADD(hour, 3, PTTL.TRAN_DATE), 104) + ' ' + CAST(DATEPART(hour, DATEADD(hour, 3, PTTL.TRAN_DATE)) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, DATEADD(hour, 3, PTTL.TRAN_DATE)) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, DATEADD(hour, 3, PTTL.TRAN_DATE)) as varchar(2))
+					ELSE CAST(DATEPART(minute, DATEADD(hour, 3, PTTL.TRAN_DATE)) as varchar(2))
+					END 
+				+ ':' 
+				+ CAST(DATEPART(ss, DATEADD(hour, 3, PTTL.TRAN_DATE)) as varchar(2)), 
+--PTER.TERRA_NAME as aComp1, 
+PTTL.COMP_ID as aCompID, 
+COMP.COMP_NAME as aComp1, 
+CC.FULLNAME as aComp2
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES_DESC] AS PTD 
+			ON PTTL.TRANTYPE_ID = PTD.TRANTYPE_ID
+			AND PTD.LOCALE = 'RU'
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES] AS PTT
+			ON PTTL.TRANTYPE_ID = PTT.TRANTYPE_ID
+		/*LEFT JOIN [Parsec3].[dbo].[TERRITORY] AS PTER
+			ON PTTL.COMP_ID = PTER.ITEM_ID*/
+		LEFT JOIN [Parsec3].[dbo].[COMPONENT] as COMP
+			ON PTTL.COMP_ID = COMP.COMP_ID
+		LEFT JOIN [Parsec3].[dbo].[PERSON] as PP
+			ON PP.PERS_ID = PTTL.USR_ID
+		LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as CC
+			ON CC.M_ID = PTTL.COMP_ID
+
+WHERE
+	DATEADD(hour, 3, PTTL.TRAN_DATE) &gt;= @dtFrom
+	AND DATEADD(hour, 3, PTTL.TRAN_DATE) &lt; DATEADD(day, 1, @dtTo)
+	--AND PTTL.TRANTYPE_ID IN(590144, 590145)					
+
+	SELECT * FROM @TINOUT ORDER BY 1 DESC
+	
+	--SELECT * FROM [Parsec3].[dbo].[TRANTYPES_DESC] WHERE LOCALE = 'RU' ORDER BY TRANTYPE_ID
+	
+	
+/*	SET DATEFORMAT dmy
+
+SELECT --TOP 10
+	RRR.*,
+	-- РґР°Р»РµРµ РЅР°С…РѕРґРёРј Р±Р»РёР¶Р°Р№С€СѓСЋ Р·Р°РїРёСЃС‚СЊ РІ TRANSLOG СЃ СѓРєР°Р·Р°РЅС‹Рј COMP_ID
+	-- Рё Р±РµСЂРµРј USR_ID
+	(SELECT TOP 1 [USR_ID]
+	 FROM [Parsec3Trans].[dbo].[TRANSLOG]
+	 WHERE [TRAN_DATE] &lt; RRR.[REVISION_DATE]
+	   AND [COMP_ID] = '09A29015-5E26-4C2F-B961-F36FC468BEDB'
+	 ORDER BY [TRAN_DATE] DESC
+	) AS TTT_ID
+
+  FROM 
+	[Parsec3].[dbo].[VISITOR_REQUEST] AS RRR
+
+WHERE 
+	RRR.[REQUEST_DATE] &gt; '12.08.2015'
+ORDER BY 
+	RRR.[REQUEST_DATE] --DESC*/
+	
+
+--- РІ РїРѕР»СѓС‡РёРІС€РµР№СЃСЏ РІС‹Р±РѕСЂРєРµ Guid_Detalis - Р­РўРћ РќРћРњР•Р  РЎРћР—Р”РђРќРќРћР™ Р—РђРЇР’РљР,
+--- Рђ TRAN_ID - Р­РўРћ РќРђРЁР• РЎРћР‘Р«РўРР• "РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° Р·Р°СЏРІРєР° РїРѕСЃРµС‚РёС‚РµР»СЏ" 
+---  РР— TRANSLOG
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Дата с:</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>21.08.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>21.08.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Test\Новый запрос 20</Name>
+      <DateCreate>2015-08-13T14:40:27.0898437+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>--use [parsec3trans]
+--go
+
+
+
+---РР·РІРµСЃС‚РЅРѕ, С‡С‚Рѕ СЃРѕР±С‹С‚РёСЏ (СЃРѕР·РґР°РЅРёРµ 394572, РёР·РјРµРЅРµРЅРёРµ Р·Р°СЏРІРєРё 394573)
+-- TRANSLOG РІСЏР¶СѓС‚СЃСЏ  СЃ GUID_DATE 
+--- logic_type = 12  - workstation
+---            = 13  - operator
+---				= 14 - id Р·Р°СЏРІРєРё
+
+-- СЂР°СЃС€РёСЂРµРЅРёРµ РїСЂР°РІ
+-- logic_type = 12 - workstation
+-- logic_type = 13 - РѕРїРµСЂР°С‚РѕСЂ
+
+-- РёР·РјРµРЅРµРЅРёРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°
+
+
+
+SET dateformat dmy
+SELECT     
+tl.rid, tl.TRAN_ID, tl.COMP_ID, tl.USR_ID, 
+DATEADD(hour, 3, tl.TRAN_DATE), 
+CONVERT(varchar(10), DATEADD(hour, 3, tl.TRAN_DATE), 104) + ' ' + CAST(DATEPART(hour, DATEADD(hour, 3, tl.TRAN_DATE)) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, DATEADD(hour, 3, tl.TRAN_DATE)) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, DATEADD(hour, 3, tl.TRAN_DATE)) as varchar(2))
+					ELSE CAST(DATEPART(minute, DATEADD(hour, 3, tl.TRAN_DATE)) as varchar(2))
+					END 
+				+ ':' 
+				+ CAST(DATEPART(ss, DATEADD(hour, 3, tl.TRAN_DATE)) as varchar(2)), 
+tl.TRANTYPE_ID, 
+ --data1.*
+data1.PDATA AS Guid_Workstation, 
+data2.PDATA AS Guid_Details, 
+data3.PDATA AS Guid_Operator, 
+--data4.PDATA as aGuid4, 
+--data5.PDATA as aGuid5, 
+--data6.PDATA as aGuid6--,
+--DM.FULLNAME as aOperatorName, 
+--CM.COMP_NAME as aCompName
+--DM.LAST_NAME as aUnknownField
+IC.*
+FROM         [parsec3Trans].dbo.TRANSLOG AS tl --WITH (NOLOCK) 
+					  LEFT JOIN
+                      [parsec3Trans].dbo.GUID_DATA AS data1 
+					  --WITH (NOLOCK) 
+					  ON tl.rid = data1.rid AND data1.logic_type = 12 
+					  LEFT JOIN
+                      [parsec3Trans].dbo.GUID_DATA AS data2 
+					  --WITH (NOLOCK) 
+					  ON tl.rid = data2.rid AND data2.logic_type = 14 
+					  LEFT JOIN
+                      [parsec3Trans].dbo.GUID_DATA AS data3
+					  --WITH (NOLOCK) 
+					  ON tl.rid = data3.rid AND data3.logic_type = 13
+					  
+					 /* LEFT JOIN 
+					  [parsec3Trans].dbo.GUID_DATA AS data4
+					  on data4.rid = tl.rid AND data4.logic_type = 5
+					  LEFT JOIN 
+					  [parsec3Trans].dbo.GUID_DATA AS data5
+					  on data5.rid = tl.rid AND data5.logic_type = 7
+					  LEFT JOIN 
+					  [parsec3Trans].dbo.GUID_DATA AS data6
+					  on data6.rid = tl.rid AND data6.logic_type = 8*/
+					  
+					  
+					  --LEFT JOIN
+                      --[parsec3Trans].dbo.DWORD_DATA AS idata1
+					  --WITH (NOLOCK) 
+					  --ON tl.rid = idata1.rid --AND data1.logic_type = 12 
+					  
+					--  LEFT JOIN [parsec3].dbo.[DOMAIN_MEMBERSHIP] as DM ON DM.M_ID = data3.PDATA
+					 --LEFT JOIN [parsec3].dbo.[PERSON] as DM ON DM.PERS_ID = data2.PDATA
+					--LEFT JOIN [parsec3].dbo.[COMPONENT] as CM ON CM.COMP_ID = data2.PDATA
+					LEFT JOIN [parsec3].dbo.[IDENTIFIER] as IC ON IC.[IDENTIFIER_ID] = data2.PDATA
+where 
+--data2.PDATA = '37d667b0-8857-46ed-9c09-71df39876133'
+tran_id in('f7ec5ccf-5be2-4b90-ac9e-d69b87ac3bf4')--, 'cd3e575f-a0ec-4604-bae5-f82a34af59bd')
+ORDER BY 5 desc</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Test\Новый запрос 21</Name>
+      <DateCreate>2015-08-14T14:46:07.4853515+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>set dateformat dmy
+
+declare @rdate datetime
+declare @zdate datetime
+
+SET @rdate = (SELECT REVISION_DATE 
+				FROM [Parsec3].[dbo].[VISITOR_REQUEST] 
+				WHERE [REQUEST_ID] = 'af8c00ba-6b2f-499d-b3b0-e037e5fd95fa')
+				
+SET @zdate = (SELECT REQUEST_DATE 
+				FROM [Parsec3].[dbo].[VISITOR_REQUEST] 
+				WHERE [REQUEST_ID] = 'af8c00ba-6b2f-499d-b3b0-e037e5fd95fa')				
+
+SELECT * FROM [Parsec3Trans].[dbo].[TRANSLOG]
+	 WHERE DATEADD(hour, 3, [TRAN_DATE]) &lt; DATEADD(hour, 3, @rdate)
+		AND DATEADD(hour, 3, [TRAN_DATE]) &gt; DATEADD(hour, 3, @zdate)
+	   AND [COMP_ID] = '80015421-ec02-49bc-b41c-f0ceaf798e3c'  
+	   
+SELECT TOP 1 [USR_ID]
+	 FROM [Parsec3Trans].[dbo].[TRANSLOG]
+	 WHERE DATEADD(hour, 3, [TRAN_DATE]) &lt; DATEADD(hour, 3, @rdate)
+		AND DATEADD(hour, 3, [TRAN_DATE]) &gt; DATEADD(hour, 3, @zdate)
+	   AND [COMP_ID] = '80015421-ec02-49bc-b41c-f0ceaf798e3c'  
+	 ORDER BY [TRAN_DATE] DESC
+	</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Test\Тестовая версия</Name>
+      <DateCreate>2015-08-28T14:08:59.3720703+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>
+
+DECLARE @pos int -- РїРѕР·РёС†РёСЏ СЂР°Р·РґРµР»РёС‚РµР»СЏ
+DECLARE @str varchar(255) -- РёСЃС…РѕРґРЅР°СЏ СЃС‚СЂРѕРєР° СЃ СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё
+DECLARE @strForLike varchar(255) -- РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅР°СЏ СЃС‚СЂРѕРєР° РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
+DECLARE @LikeStr varchar(255) -- РІС‹С…РѕРґРЅР°СЏ СЃС‚СЂРѕРєР° РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
+DECLARE @result varchar(255)
+
+SET @str = '#pStr?#'
+SET @LikeStr = ''
+
+WHILE (LEN(@str) &gt; 0)
+BEGIN
+	SET @pos = CHARINDEX(';', @str, 0)
+	IF (@pos &gt; 0)
+		BEGIN
+			SET @strForLike = SUBSTRING(@str, 0, @pos)
+			SET @str = RTRIM(LTRIM(SUBSTRING(@str, @pos + 1, LEN(@str) - @pos)))
+		END
+	ELSE
+		BEGIN
+			SET @strForLike = @str
+			SET @str = ''
+		END
+		
+	SET @LikeStr = @LikeStr + ' AND NOT(aVisitInit LIKE ''%' + @strForLike + '%'')'
+END
+
+SELECT SUBSTRING(@LikeStr, 5, LEN(@LIkeStr) - 4)</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Баланс рабочего времени</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2015-08-07T00:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+/**
+	Баланс рабочего времени
+*/
+
+SET dateformat dmy
+
+DECLARE @dtFrom datetime, @dtTo datetime
+SET @dtFrom = CAST(CONVERT (varchar(16), #?pDateFrom?#, 104) as datetime)
+SET @dtTo = DATEADD(d, 1, CAST(CONVERT (varchar(16), #?pDateTo?#, 104) as datetime))
+
+DECLARE @BWDay AS varchar(10), @FWDay AS varchar(10)
+DECLARE @CriticalPeriodIn int, @CriticalPeriodOut int
+DECLARE @WDRangeSec int
+
+SET @BWDay = ' 09:00:00' -- начало рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @FWDay = ' 18:00:00' -- окончание рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @CriticalPeriodIn = #?pCriticalIn?#*60 -- интервал времени (сек.) считающийся опозданием прихода
+SET @CriticalPeriodOut = #?pCriticalOut?#*60 -- интервал времени (сек.) считающийся ранним уходом
+SET @WDRangeSec = 9*3600 -- продолжительность рабочего дня (сек.)
+
+DECLARE  @TInOut table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+DECLARE  @TInOutWDE table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255), aWDay int, aDelayIn int, aEarlyOut int)
+DECLARE @TSumCountDE table
+	(aUserID int, aUser varchar(255)
+	,aSumWDay int, aCountWDay int
+	,aSumDelayIn int, aCountDelayIn int
+	,aSumEarlyOut int, aCountEarlyOut int)
+	
+INSERT @TInOut
+SELECT 
+	CONVERT(varchar(20), TransLog.TranDateTime, 104)
+	,MIN(TransLog.TranDateTime)
+	,MAX(TransLog.TranDateTime)
+	,TransLog.TranUserID
+	,TransLog.TranUser
+FROM 
+	TransLog
+		INNER JOIN Personel ON TransLog.TranUserID=Personel.ID_USER
+WHERE
+	TransLog.TranDateTime &gt;= @dtFrom
+	AND TransLog.TranDateTime &lt; @dtTo
+--	AND LEN(ISNULL(Personel.Extra3,'')) &gt; 0
+	#?pFltDep?#
+GROUP BY 
+	CONVERT(varchar(20), TransLog.TranDateTime, 104),TransLog.TranUserID,TransLog.TranUser
+
+INSERT @TInOutWDE
+SELECT 
+	aDate
+	,aTimeIn
+	,aTimeOut
+	,aUserID, aUser
+	,DATEDIFF(s, aTimeIn, aTimeOut) AS aWDay
+	,CASE 
+		WHEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &gt; 0 AND DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &lt; @CriticalPeriodIn
+			THEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn)
+		ELSE null	
+	  END AS aDelayIn
+	,CASE 
+		WHEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &gt; 0 AND DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &lt; @CriticalPeriodOut
+			THEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime))
+		ELSE null	
+	  END AS aEarlyOut
+FROM
+	@TInOut
+
+INSERT @TSumCountDE	
+SELECT 
+	aUserID, aUser
+	,ISNULL(SUM(aWDay), 0)
+	,ISNULL(COUNT(aWDay), 0)
+	,ISNULL(SUM(aDelayIn), 0)
+	,ISNULL(COUNT(aDelayIn), 0)
+	,ISNULL(SUM(aEarlyOut), 0)
+	,ISNULL(COUNT(aEarlyOut), 0)
+FROM
+	@TInOutWDE
+GROUP BY aUserID, aUser
+
+SELECT
+	aUserID, aUser
+	-- Кол-во приходов на работу
+	,aCountWDay 
+	-- Суммарное раб. время за месяц
+	,CAST(CAST(aSumWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumWDay%3600)/60 as int) as varchar(8))+' мин.' AS aWHourMinute
+	-- Отклонение от норматива
+	,CASE WHEN (aSumWDay-@WDRangeSec*aCountWDay) &gt; 0 THEN '' ELSE '-' END	
+		+ CAST(CAST(ABS(aSumWDay-@WDRangeSec*aCountWDay)/3600 as int) as varchar(8))+' ч., '+CAST(CAST((ABS(aSumWDay-@WDRangeSec*aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWВDifHourMinute 
+	-- Средняя продолжительность раб.дня
+	,CAST(CAST(aSumWDay/aCountWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST(((aSumWDay/aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWAvgHourMinute
+	-- Несвоевременный приход кол-во
+	,aCountDelayIn
+	-- Несвоевременный приход сумм.время
+	,CASE WHEN aCountDelayIn &gt; 0
+		THEN CAST(CAST(aSumDelayIn/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumDelayIn%3600)/60 as int) as varchar(8))+' мин.'
+		ELSE '-'
+	END AS aDelayHourMinute
+	-- Несвоевременный уход кол-во
+	,aCountEarlyOut
+	-- Несвоевременный уход сумм.время
+	,CASE WHEN aCountEarlyOut &gt; 0
+		THEN CAST(CAST(aSumEarlyOut/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumEarlyOut%3600)/60 as int) as varchar(8))+' мин.' 
+		ELSE '-'
+	END AS aEarlyHourMinute
+FROM 
+	@TSumCountDE
+ORDER BY 2
+
+SELECT TOP 1
+	CASE 
+		WHEN LEN('#?pFltDep?#') = 0 THEN '[В С Е]'
+		WHEN Personel.Dep_ID &gt; 0 THEN Depart.DeptName
+		ELSE '[вне подразделений]'
+	END  AS aDepName
+FROM
+	Personel LEFT JOIN Depart ON Personel.Dep_ID=Depart.ID_DEP
+WHERE
+	1=1
+	#?pFltDep?#
+
+/*	
+                    &lt;TFOOT&gt;
+                        &lt;TR class="GridCaption"&gt;
+                            &lt;TD colspan="10"&gt;&lt;xsl:text disable-output-escaping="yes"&gt;&amp;amp;nbsp;&lt;/xsl:text&gt;&lt;/TD&gt;
+                        &lt;/TR&gt;
+                    &lt;/TFOOT&gt;
+*/	
+
+	
+SELECT 
+	aUserID, aUser
+	,aDate
+	,CONVERT(varchar(50), aTimeIn, 120)
+	,CONVERT(varchar(50), aTimeOut, 120)
+	,aWDay
+	,aDelayIn
+	,aEarlyOut
+FROM
+	@TInOutWDE
+
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Баланс рабочего времени&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Баланс рабочего времени сотрудников ХК "ИНТЕРРОС" за период с 
+					&lt;font class="Param"&gt;
+						#?pDateFrom?#
+					&lt;/font&gt; до
+                    &lt;font class="Param"&gt;
+						#?pDateTo?#
+					&lt;/font&gt;
+					&lt;TABLE width="50%"&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Объект:&lt;/TD&gt;&lt;TD&gt;#?pObjectName?#&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Подразделение:&lt;/TD&gt;&lt;TD&gt;&lt;xsl:value-of select="Query2Table2/aDepName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;№ п/п&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="15%"&gt;Ф.И.О. Сотрудника&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Кол-во раб.дней&lt;/TD&gt;
+                            &lt;TD align="center" rowspan="2" width="10%"&gt;Суммарное раб. время за месяц&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Отклонение от норматива (9 час. в день)&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Средняя продолжит-ть раб.дня&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный приход (после 9 ч. - #?pCriticalIn?# мин.)&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный уход (до 18 ч. - #?pCriticalOut?# мин.)&lt;/TD&gt;
+						&lt;/TR&gt;
+                        &lt;TR&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                        &lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+                            &lt;xsl:comment&gt;Водитель в резерве до привязки к автомобилю&lt;/xsl:comment&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aUser" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountWDay" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWВDifHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWAvgHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountDelayIn" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDelayHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountEarlyOut" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aEarlyHourMinute" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Объект</Title>
+          <Name>pObjectName</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>Название объекта</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с </Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.04.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>30.04.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>Подразделение</Title>
+          <Name>pFltDep</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+AND Personel.Dep_ID is null~[вне подразделений]
+;
+SET dateformat dmy
+DECLARE @dtTo datetime
+SET @dtTo = DATEADD(d, 1, CAST(CONVERT (varchar(16), #?pDateTo?#,104) as datetime))
+SELECT DISTINCT
+	'AND Personel.Dep_ID = '+CAST(Depart.ID_DEP AS varchar(16)),
+	Depart.DeptName
+FROM
+	TransLog
+		INNER JOIN Personel ON TransLog.TranUserID=Personel.ID_USER
+		INNER JOIN Depart ON Personel.Dep_ID=Depart.ID_DEP
+WHERE
+	TransLog.TranDateTime &gt;= #?pDateFrom?#
+	AND TransLog.TranDateTime &lt; @dtTo
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>10</Number>
+          <Title>Интервал времени  (в мин.) c 9 ч., считающийся опозданием прихода</Title>
+          <Name>pCriticalIn</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+        <Param>
+          <Number>12</Number>
+          <Title>Интервал времени (в мин.) до 18 ч., считающийся ранним уходом</Title>
+          <Name>pCriticalOut</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Баланс рабочего времени V2</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2011-02-08T00:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+/**
+	Баланс рабочего времени
+*/
+
+SET dateformat dmy
+
+DECLARE @dtFrom datetime, @dtTo datetime
+SET @dtFrom = CAST(CONVERT (varchar(16), #?pDateFrom?#, 104) as datetime)
+SET @dtTo = DATEADD(d, 1, CAST(CONVERT (varchar(16), #?pDateTo?#, 104) as datetime))
+
+DECLARE @BWDay AS varchar(10), @FWDay AS varchar(10)
+DECLARE @CriticalPeriodIn int, @CriticalPeriodOut int
+DECLARE @WDRangeSec int
+
+SET @BWDay = ' 09:00:00' -- начало рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @FWDay = ' 18:00:00' -- окончание рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @CriticalPeriodIn = #?pCriticalIn?#*60 -- интервал времени (сек.) считающийся опозданием прихода
+SET @CriticalPeriodOut = #?pCriticalOut?#*60 -- интервал времени (сек.) считающийся ранним уходом
+SET @WDRangeSec = 9*3600 -- продолжительность рабочего дня (сек.)
+
+DECLARE  @TInOut table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+DECLARE  @TInOutWDE table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255), aWDay int, aDelayIn int, aEarlyOut int)
+DECLARE @TSumCountDE table
+	(aUserID int, aUser varchar(255)
+	,aSumWDay int, aCountWDay int
+	,aSumDelayIn int, aCountDelayIn int
+	,aSumEarlyOut int, aCountEarlyOut int)
+	
+INSERT @TInOut
+SELECT 
+	CONVERT(varchar(20), TransLog.TranDateTime, 104)
+	,MIN(TransLog.TranDateTime)
+	,MAX(TransLog.TranDateTime)
+	,TransLog.TranUserID
+	,TransLog.TranUser
+FROM 
+	TransLog
+		INNER JOIN Personel ON TransLog.TranUserID=Personel.ID_USER
+		INNER JOIN 
+		(
+			SELECT D1.ID_DEP AS DD 
+				FROM Depart AS D1 
+					#?pFltDep?#
+			UNION
+			SELECT D2.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					#?pFltDep?#
+			UNION
+			SELECT D3.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+					#?pFltDep?#
+			UNION
+			SELECT D4.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+					INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+					#?pFltDep?#
+			UNION
+			SELECT D5.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+					INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+					INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+					#?pFltDep?#
+			UNION
+			SELECT D6.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+					INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+					INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+					INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+					#?pFltDep?#
+			UNION
+			SELECT D7.ID_DEP AS DD 
+				FROM Depart AS D1 
+					INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+					INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+					INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+					INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+					INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+					INNER JOIN Depart AS D7 ON D6.ID_DEP=D7.Parent_ID
+					#?pFltDep?#
+		) AS DEP ON Personel.Dep_ID = DEP.DD
+WHERE
+	TransLog.TranDateTime &gt;= @dtFrom
+	AND TransLog.TranDateTime &lt; @dtTo
+	AND LEN(ISNULL(Personel.Extra3,'')) &gt; 0
+GROUP BY 
+	CONVERT(varchar(20), TransLog.TranDateTime, 104),TransLog.TranUserID,TransLog.TranUser
+
+INSERT @TInOutWDE
+SELECT 
+	aDate
+	,aTimeIn
+	,aTimeOut
+	,aUserID, aUser
+	,DATEDIFF(s, aTimeIn, aTimeOut) AS aWDay
+	,CASE 
+		WHEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &gt; 0 AND DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &lt; @CriticalPeriodIn
+			THEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn)
+		ELSE null	
+	  END AS aDelayIn
+	,CASE 
+		WHEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &gt; 0 AND DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime)) &lt; @CriticalPeriodOut
+			THEN DATEDIFF(s, aTimeOut, CAST(aDate+@FWDay AS datetime))
+		ELSE null	
+	  END AS aEarlyOut
+FROM
+	@TInOut
+
+INSERT @TSumCountDE	
+SELECT 
+	aUserID, aUser
+	,ISNULL(SUM(aWDay), 0)
+	,ISNULL(COUNT(aWDay), 0)
+	,ISNULL(SUM(aDelayIn), 0)
+	,ISNULL(COUNT(aDelayIn), 0)
+	,ISNULL(SUM(aEarlyOut), 0)
+	,ISNULL(COUNT(aEarlyOut), 0)
+FROM
+	@TInOutWDE
+GROUP BY aUserID, aUser
+
+SELECT
+	aUserID, aUser
+	-- Кол-во приходов на работу
+	,aCountWDay 
+	-- Суммарное раб. время за месяц
+	,CAST(CAST(aSumWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumWDay%3600)/60 as int) as varchar(8))+' мин.' AS aWHourMinute
+	-- Отклонение от норматива
+	,CASE WHEN (aSumWDay-@WDRangeSec*aCountWDay) &gt; 0 THEN '' ELSE '-' END	
+		+ CAST(CAST(ABS(aSumWDay-@WDRangeSec*aCountWDay)/3600 as int) as varchar(8))+' ч., '+CAST(CAST((ABS(aSumWDay-@WDRangeSec*aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWВDifHourMinute 
+	-- Средняя продолжительность раб.дня
+	,CAST(CAST(aSumWDay/aCountWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST(((aSumWDay/aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWAvgHourMinute
+	-- Несвоевременный приход кол-во
+	,aCountDelayIn
+	-- Несвоевременный приход сумм.время
+	,CASE WHEN aCountDelayIn &gt; 0
+		THEN CAST(CAST(aSumDelayIn/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumDelayIn%3600)/60 as int) as varchar(8))+' мин.'
+		ELSE '-'
+	END AS aDelayHourMinute
+	-- Несвоевременный уход кол-во
+	,aCountEarlyOut
+	-- Несвоевременный уход сумм.время
+	,CASE WHEN aCountEarlyOut &gt; 0
+		THEN CAST(CAST(aSumEarlyOut/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumEarlyOut%3600)/60 as int) as varchar(8))+' мин.' 
+		ELSE '-'
+	END AS aEarlyHourMinute
+FROM 
+	@TSumCountDE
+ORDER BY 2
+
+SELECT TOP 1
+	CASE 
+		WHEN LEN('#?pFltDep?#') = 0 THEN '[В С Е]'
+		ELSE D1.DeptName
+	END  AS aDepName
+FROM
+	Depart AS D1
+#?pFltDep?#
+
+/*	
+                    &lt;TFOOT&gt;
+                        &lt;TR class="GridCaption"&gt;
+                            &lt;TD colspan="10"&gt;&lt;xsl:text disable-output-escaping="yes"&gt;&amp;amp;nbsp;&lt;/xsl:text&gt;&lt;/TD&gt;
+                        &lt;/TR&gt;
+                    &lt;/TFOOT&gt;
+*/	
+
+	
+SELECT 
+	aUserID, aUser
+	,aDate
+	,CONVERT(varchar(50), aTimeIn, 120)
+	,CONVERT(varchar(50), aTimeOut, 120)
+	,aWDay
+	,aDelayIn
+	,aEarlyOut
+FROM
+	@TInOutWDE
+
+
+SELECT * FROM @TInOut
+
+SELECT * FROM @TInOutWDE</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Баланс рабочего времени&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Баланс рабочего времени сотрудников ХК "ИНТЕРРОС" за период с 
+					&lt;font class="Param"&gt;
+						#?pDateFrom?#
+					&lt;/font&gt; до
+                    &lt;font class="Param"&gt;
+						#?pDateTo?#
+					&lt;/font&gt;
+					&lt;TABLE width="50%"&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Объект:&lt;/TD&gt;&lt;TD&gt;#?pObjectName?#&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Подразделение:&lt;/TD&gt;&lt;TD&gt;&lt;xsl:value-of select="Query2Table2/aDepName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;№ п/п&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="15%"&gt;Ф.И.О. Сотрудника&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Кол-во раб.дней&lt;/TD&gt;
+                            &lt;TD align="center" rowspan="2" width="10%"&gt;Суммарное раб. время за месяц&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Отклонение от норматива (9 час. в день)&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Средняя продолжит-ть раб.дня&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный приход (после 9 ч. - #?pCriticalIn?# мин.)&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный уход (до 18 ч. - #?pCriticalOut?# мин.)&lt;/TD&gt;
+						&lt;/TR&gt;
+                        &lt;TR&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                        &lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+                            &lt;xsl:comment&gt;Водитель в резерве до привязки к автомобилю&lt;/xsl:comment&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aUser" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountWDay" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWВDifHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWAvgHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountDelayIn" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDelayHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountEarlyOut" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aEarlyHourMinute" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Объект</Title>
+          <Name>pObjectName</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>Название объекта</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с </Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.02.2011</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>28.02.2011</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>Подразделение</Title>
+          <Name>pFltDep</Name>
+          <Type>StrSelectTree</Type>
+          <Inset>true</Inset>
+          <CurrentValue>WHERE D1.ID_DEP = 5:Информационно-Аналитический отдел</CurrentValue>
+          <DefaultValue />
+          <SelectValue>_idDep i 0
+;
+SELECT '', 'ВСЕ', 1, 0 
+;
+SELECT
+	'WHERE D1.ID_DEP = '+CAST(Depart.ID_DEP AS varchar(16)),
+	Depart.DeptName,
+	COUNT(DC.ID_DEP),
+	Depart.ID_DEP
+
+FROM	
+	Depart LEFT JOIN Depart AS DC ON Depart.ID_DEP=DC.Parent_ID
+WHERE	
+	ISNULL(Depart.Parent_ID, 0) = #?_idDep?#
+GROUP BY
+	' D1.ID_DEP = '+CAST(Depart.ID_DEP AS varchar(16)),
+	Depart.DeptName,
+	Depart.ID_DEP
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>10</Number>
+          <Title>Интервал времени  (в мин.) c 9 ч., считающийся опозданием прихода</Title>
+          <Name>pCriticalIn</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+        <Param>
+          <Number>12</Number>
+          <Title>Интервал времени (в мин.) до 18 ч., считающийся ранним уходом</Title>
+          <Name>pCriticalOut</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Баланс рабочего времени V3</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2015-08-07T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+/**
+	Баланс рабочего времени
+*/
+
+SET dateformat dmy
+
+DECLARE @dtFrom datetime, @dtTo datetime
+SET @dtFrom = CAST('01.#?pMonth?#.#?pYear?#' as datetime)
+SET @dtTo = DATEADD(m, 1, @dtFrom)
+
+DECLARE @BWDay AS varchar(10) --, @FWDay AS varchar(10)
+DECLARE @CriticalPeriodIn int, @CriticalPeriodOut int
+--DECLARE @WDRangeSec int
+
+SET @BWDay = ' 09:00:00' -- начало рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+--SET @FWDay = ' 18:00:00' -- окончание рабочего дня !!! пробел в начале ОБЯЗАТЕЛЕН
+SET @CriticalPeriodIn = #?pCriticalIn?#*60 -- интервал времени (сек.) считающийся опозданием прихода
+SET @CriticalPeriodOut = #?pCriticalOut?#*60 -- интервал времени (сек.) считающийся ранним уходом
+--SET @WDRangeSec = 9*3600 -- продолжительность рабочего дня (сек.)
+
+DECLARE  @TInOut table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID uniqueidentifier, aUser varchar(255), aWDRangeSec int, aFWDay varchar(10))
+DECLARE  @TInOutWDE table 
+	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID uniqueidentifier, aUser varchar(255), aWDay int, aDelayIn int, aEarlyOut int, aWDRangeSec int)
+DECLARE @TSumCountDE table
+	(aUserID uniqueidentifier, aUser varchar(255)
+	,aSumWDay int, aCountWDay int
+	,aSumDelayIn int, aCountDelayIn int
+	,aSumEarlyOut int, aCountEarlyOut int
+	,aSumWDRangeSec int)
+	
+INSERT @TInOut
+SELECT 
+	CONVERT(varchar(20), PTTL.TRAN_DATE, 104)
+	,MIN(PTTL.TRAN_DATE)
+	,MAX(PTTL.TRAN_DATE)
+	,PTTL.USR_ID
+	,PP.LAST_NAME+' '+PP.FIRST_NAME+' '+PP.MIDDLE_NAME
+	,CASE 
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pFDay?#') &gt; 0 THEN 7*3600+45*60
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pHDay?#') &gt; 0 THEN 8*3600
+		ELSE 9*3600
+	END
+	,CASE 
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pFDay?#') &gt; 0 THEN ' 16:45:00'
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pHDay?#') &gt; 0 THEN ' 17:00:00'
+		ELSE ' 18:00:00'
+	END
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].dbo.[Person] AS PP ON PTTL.USR_ID=PP.PERS_ID
+		INNER JOIN 
+		(
+			SELECT D1.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					#?pFltDep?#
+			UNION
+			SELECT D2.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					#?pFltDep?#
+			UNION
+			SELECT D3.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					#?pFltDep?#
+			UNION
+			SELECT D4.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					#?pFltDep?#
+			UNION
+			SELECT D5.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					#?pFltDep?#
+			UNION
+			SELECT D6.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					#?pFltDep?#
+			UNION
+			SELECT D7.ORG_ID AS DD 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D7 ON D6.ORG_ID=D7.PARENT_ID
+					#?pFltDep?#
+		) AS DEP ON PP.ORG_ID = DEP.DD
+WHERE
+	PTTL.TRAN_DATE &gt;= @dtFrom
+	AND PTTL.TRAN_DATE &lt; @dtTo
+--	AND LEN(ISNULL(Personel.Extra3,'')) &gt; 0
+GROUP BY 
+	CONVERT(varchar(20), PTTL.TRAN_DATE, 104)
+	,PTTL.USR_ID
+	,PP.LAST_NAME+' '+PP.FIRST_NAME+' '+PP.MIDDLE_NAME
+	,CASE 
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pFDay?#') &gt; 0 THEN 7*3600+45*60
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pHDay?#') &gt; 0 THEN 8*3600
+		ELSE 9*3600
+	END
+	,CASE 
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pFDay?#') &gt; 0 THEN ' 16:45:00'
+		WHEN PATINDEX('%'+SUBSTRING(CONVERT(varchar(10),PTTL.TRAN_DATE,104),1,2)+'%','#?pHDay?#') &gt; 0 THEN ' 17:00:00'
+		ELSE ' 18:00:00'
+	END
+
+INSERT @TInOutWDE
+SELECT 
+	aDate
+	,aTimeIn
+	,aTimeOut
+	,aUserID, aUser
+	,DATEDIFF(s, aTimeIn, aTimeOut) AS aWDay
+	,CASE 
+		WHEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &gt; 0 AND DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn) &lt; @CriticalPeriodIn
+			THEN DATEDIFF(s, CAST(aDate+@BWDay AS datetime) , aTimeIn)
+		ELSE null	
+	  END AS aDelayIn
+	,CASE 
+		WHEN DATEDIFF(s, aTimeOut, CAST(aDate+aFWDay AS datetime)) &gt; 0 AND DATEDIFF(s, aTimeOut, CAST(aDate+aFWDay AS datetime)) &lt; @CriticalPeriodOut
+			THEN DATEDIFF(s, aTimeOut, CAST(aDate+aFWDay AS datetime))
+		ELSE null	
+	  END AS aEarlyOut
+	,aWDRangeSec
+FROM
+	@TInOut
+WHERE LEN(aUser) &gt; 0
+
+INSERT @TSumCountDE	
+SELECT 
+	aUserID, aUser
+	,ISNULL(SUM(aWDay), 0)
+	,ISNULL(COUNT(aWDay), 0)
+	,ISNULL(SUM(aDelayIn), 0)
+	,ISNULL(COUNT(aDelayIn), 0)
+	,ISNULL(SUM(aEarlyOut), 0)
+	,ISNULL(COUNT(aEarlyOut), 0)
+	,ISNULL(SUM(aWDRangeSec), 0)
+FROM
+	@TInOutWDE
+GROUP BY aUserID, aUser
+
+SELECT
+	aUserID, aUser
+	-- Кол-во приходов на работу
+	,aCountWDay 
+	-- Суммарное раб. время за месяц
+	,CAST(CAST(aSumWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumWDay%3600)/60 as int) as varchar(8))+' мин.' AS aWHourMinute
+	-- Отклонение от норматива
+	,CASE WHEN (aSumWDay-aSumWDRangeSec) &gt; 0 THEN '' ELSE '-' END	
+		+ CAST(CAST(ABS(aSumWDay-aSumWDRangeSec)/3600 as int) as varchar(8))+' ч., '+CAST(CAST((ABS(aSumWDay-aSumWDRangeSec)%3600)/60 as int) as varchar(8))+' мин.' AS aWВDifHourMinute 
+	-- Средняя продолжительность раб.дня
+	,CAST(CAST(aSumWDay/aCountWDay/3600 as int) as varchar(8))+' ч., '+CAST(CAST(((aSumWDay/aCountWDay)%3600)/60 as int) as varchar(8))+' мин.' AS aWAvgHourMinute
+	-- Несвоевременный приход кол-во
+	,aCountDelayIn
+	-- Несвоевременный приход сумм.время
+	,CASE WHEN aCountDelayIn &gt; 0
+		THEN CAST(CAST(aSumDelayIn/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumDelayIn%3600)/60 as int) as varchar(8))+' мин.'
+		ELSE '-'
+	END AS aDelayHourMinute
+	-- Несвоевременный уход кол-во
+	,aCountEarlyOut
+	-- Несвоевременный уход сумм.время
+	,CASE WHEN aCountEarlyOut &gt; 0
+		THEN CAST(CAST(aSumEarlyOut/3600 as int) as varchar(8))+' ч., '+CAST(CAST((aSumEarlyOut%3600)/60 as int) as varchar(8))+' мин.' 
+		ELSE '-'
+	END AS aEarlyHourMinute
+FROM 
+	@TSumCountDE
+ORDER BY 2
+
+SELECT TOP 1
+	D1.ORG_NAME AS aDepName	
+FROM
+	(
+		SELECT NEWID() AS ORG_ID, ' В С Е' AS ORG_NAME
+		UNION ALL
+		SELECT DD.ORG_ID AS ORG_ID, DD.ORG_NAME AS ORG_NAME
+		FROM [Parsec3].[dbo].[ORGANIZATION] AS DD
+		WHERE LEN(DD.ORG_NAME) &gt; 0
+	) AS D1
+#?pFltDep?#
+
+/*	
+                    &lt;TFOOT&gt;
+                        &lt;TR class="GridCaption"&gt;
+                            &lt;TD colspan="10"&gt;&lt;xsl:text disable-output-escaping="yes"&gt;&amp;amp;nbsp;&lt;/xsl:text&gt;&lt;/TD&gt;
+                        &lt;/TR&gt;
+                    &lt;/TFOOT&gt;
+*/	
+
+	
+SELECT 
+	aUserID, aUser
+	,aDate
+	,CONVERT(varchar(50), aTimeIn, 120)
+	,CONVERT(varchar(50), aTimeOut, 120)
+	,aWDay
+	,aDelayIn
+	,aEarlyOut
+FROM
+	@TInOutWDE
+
+
+SELECT * FROM @TInOut
+
+SELECT * FROM @TInOutWDE</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Баланс рабочего времени&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Баланс рабочего времени сотрудников ХК "ИНТЕРРОС" за
+					&lt;font class="Param"&gt;#?pMonth?#.#?pYear?#&lt;/font&gt;
+					&lt;TABLE width="50%"&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Объект:&lt;/TD&gt;&lt;TD&gt;#?pObjectName?#&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Подразделение:&lt;/TD&gt;&lt;TD&gt;&lt;xsl:value-of select="Query2Table2/aDepName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;№ п/п&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="15%"&gt;Ф.И.О. Сотрудника&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Кол-во раб.дней&lt;/TD&gt;
+                            &lt;TD align="center" rowspan="2" width="10%"&gt;Суммарное раб. время за месяц&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Отклонение от норматива&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Средняя продолжит-ть раб.дня&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный приход (после 9 ч. - #?pCriticalIn?# мин.)&lt;/TD&gt;
+							&lt;TD align="center" colspan="2"&gt;Несвоевременный уход (конец р.д. - #?pCriticalOut?# мин.)&lt;/TD&gt;
+						&lt;/TR&gt;
+                        &lt;TR&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                            &lt;TD align="center" width="3%"&gt;Кол-во&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Сумм.время&lt;/TD&gt;
+                        &lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+                            &lt;xsl:comment&gt;Водитель в резерве до привязки к автомобилю&lt;/xsl:comment&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aUser" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountWDay" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWВDifHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aWAvgHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountDelayIn" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDelayHourMinute" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aCountEarlyOut" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aEarlyHourMinute" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Объект</Title>
+          <Name>pObjectName</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>БС-25</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>Год</Title>
+          <Name>pYear</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>2015:2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue>2004~2004
+2005~2005
+2006~2006
+2007~2007
+2008~2008
+2009~2009
+2010~2010
+2011~2011
+2012~2012
+2013~2013
+2014~2014
+2015~2015
+2016~2016
+2017~2017
+2018~2018
+2019~2019
+2020~2020</SelectValue>
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>Месяц</Title>
+          <Name>pMonth</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>05:Май</CurrentValue>
+          <DefaultValue />
+          <SelectValue>01~Январь
+02~Февраль
+03~Март
+04~Апрель
+05~Май
+06~Июнь
+07~Июль
+08~Август
+09~Сентябрь
+10~Октябрь
+11~Ноябрь
+12~Декабрь</SelectValue>
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>Подразделение</Title>
+          <Name>pFltDep</Name>
+          <Type>StrSelectTree</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:</CurrentValue>
+          <DefaultValue />
+          <SelectValue>_idDep s ''
+;
+SELECT '', 'ВСЕ', 1, 'e6397305-b408-4993-8d5b-6e7f1cea6d69' 
+;
+SELECT
+	' WHERE CAST(D1.ORG_ID AS varchar(64)) = '''+CAST(Depart.ORG_ID AS varchar(64)) +''' ',
+	Depart.ORG_NAME,
+	COUNT(DC.ORG_ID),
+	CAST(Depart.ORG_ID AS varchar(64))
+
+FROM	
+	[Parsec3].[dbo].[ORGANIZATION] AS Depart 
+	LEFT JOIN [Parsec3].[dbo].[ORGANIZATION] AS DC 
+	ON Depart.ORG_ID=DC.PARENT_ID
+WHERE	
+	CAST(Depart.PARENT_ID AS varchar(64)) = #?_idDep?#
+GROUP BY
+	' D1.ORG_ID = '+CAST(Depart.ORG_ID AS varchar(64)),
+	Depart.ORG_NAME,
+	Depart.ORG_ID
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>10</Number>
+          <Title>Интервал времени  (в мин.) c 9 ч., считающийся опозданием прихода</Title>
+          <Name>pCriticalIn</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+        <Param>
+          <Number>12</Number>
+          <Title>Интервал времени (в мин.) до 18 ч., считающийся ранним уходом</Title>
+          <Name>pCriticalOut</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>60</DefaultValue>
+          <SelectValue>60</SelectValue>
+        </Param>
+        <Param>
+          <Number>14</Number>
+          <Title>Список укороченных дней - день месяца с лидирующем нулем через запятую (короче на 1 час 15 мин.)</Title>
+          <Name>pFDay</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>04,11,18,25</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>16</Number>
+          <Title>Список предпразничных дней - день месяца с лидирующем нулем через запятую (короче на 1 час) </Title>
+          <Name>pHDay</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>22</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Где сотрудник</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2010-06-07T23:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+SET dateformat dmy
+
+
+--DECLARE  @TInOut table 
+--	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+	
+--INSERT @TInOut
+SELECT TOP #?pStepCount?#
+	CONVERT(varchar(20), TransLog.TranDateTime, 120) AS aDate_Time
+	,TransLog.TranDesc AS aTrDescLog
+	,TransDesc.TranDesc AS aTrDesc
+	,TransLog.TranArea AS aDoorLog
+	,Doors.AreaName AS aDoor
+FROM 
+	TransLog 
+		INNER JOIN TransDesc ON TransLog.TranCode=TransDesc.TranCode
+		INNER JOIN Doors ON TransLog.TranCtrlID=Doors.ID_DOOR
+WHERE
+	CAST(CONVERT(varchar(16), TranDateTime, 104) as datetime) = CAST(CONVERT(varchar(16), GETDATE(), 104) as datetime)
+	#?pFltUser?#
+ORDER BY TransLog.TranDateTime DESC
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>6</Number>
+          <Title>Сотрудник</Title>
+          <Name>pFltUser</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue> AND TransLog.TranUserID = 657:Румянцев М. М.</CurrentValue>
+          <DefaultValue />
+          <SelectValue>SET dateformat dmy
+SELECT DISTINCT
+	' AND TransLog.TranUserID = '+CAST(TranUserID as varchar(16)),
+	TranUser
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt; DATEADD(mm, -6, GETDATE())
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>8</Number>
+          <Title>Кол-во считываний</Title>
+          <Name>pStepCount</Name>
+          <Type>Integer</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Несанкционированный доступ (группировка по помещениям)</Name>
+      <DateCreate>2010-06-04T12:56:34.2764898+03:00</DateCreate>
+      <DateLastModified>2015-08-07T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>SET dateformat dmy
+
+DECLARE @dtFrom datetime, @dtTo datetime
+SET @dtFrom = CAST(CONVERT (varchar(16), #?pDateFrom?#, 104) as datetime)
+SET @dtTo = DATEADD(d, 1, CAST(CONVERT (varchar(16), #?pDateTo?#, 104) as datetime))
+
+SELECT --TOP 10
+	PTTL.[rid]
+--	,PTTL.[TRAN_ID]
+--	,PTTL.[PARENT_ID]
+	,PTTL.[COMP_ID]
+	,PTTL.[TRANTYPE_ID]
+	,PTTL.[USR_ID]
+
+	,PTER.TERRA_NAME AS aDoor
+	,PP.LAST_NAME+' '+PP.FIRST_NAME+' '+PP.MIDDLE_NAME AS aUserName
+	,CONVERT(varchar(50), DATEADD(hour, 3, PTTL.TRAN_DATE), 120) AS aDateTime
+	,PTD.TRANTYPE_DESC AS TranDesc
+	,PTTL.TRANTYPE_ID
+	,PTT.[TRANCLASS_MASK]
+
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].dbo.[Person] AS PP ON PTTL.USR_ID=PP.PERS_ID
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES_DESC] AS PTD 
+			ON PTTL.TRANTYPE_ID = PTD.TRANTYPE_ID
+			AND PTD.LOCALE = 'RU'
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES] AS PTT
+			ON PTTL.TRANTYPE_ID = PTT.TRANTYPE_ID
+		INNER JOIN [Parsec3].[dbo].[TERRITORY] AS PTER
+			ON PTTL.COMP_ID = PTER.ITEM_ID
+
+WHERE
+	DATEADD(hour, 3, PTTL.TRAN_DATE) &gt;= @dtFrom
+	AND DATEADD(hour, 3, PTTL.TRAN_DATE) &lt; @dtTo
+	AND PTTL.TRANTYPE_ID != 590113 -- РќРµС‚ РґРѕСЃС‚СѓРїР° РїРѕ Р±Р»РѕРєРёСЂРѕРІРєРµ
+	AND PTT.[TRANCLASS_MASK] &lt; 129
+--	AND PTT.[TRANCLASS_MASK] &gt; 65535
+--	AND PP.LAST_NAME LIKE 'Р‘СѓР±%'
+ORDER BY aDoor,aUserName,aDateTime
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:decimal-format decimal-separator=","/&gt;
+	&lt;xsl:template match="/"&gt;
+		&lt;HTML&gt;
+			&lt;STYLE TYPE="text/css"&gt;
+				.UFR {font-size: smaller; font-style: italic; color: sandybrown}
+				.InRest {font-size: smaller; font-style: italic; color: green}
+				.ConvCurr {font-size: smaller; font-style: normal; color: darkblue}
+			&lt;/STYLE&gt;			
+			&lt;BODY bgcolor="#FFFFFF"&gt;  
+
+				&lt;P class="Caption"&gt;
+					Протокол попыток несанкционированного доступа сотрудников ХК "ИНТЕРРОС" в нережимные помещения
+					за период с 
+					&lt;font class="Param"&gt;
+						#?pDateFrom?#
+					&lt;/font&gt; до
+                    &lt;font class="Param"&gt;
+						#?pDateTo?#
+					&lt;/font&gt; (групировка по помещениям)
+					&lt;TABLE width="50%"&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Объект:&lt;/TD&gt;&lt;TD&gt;#?pObjectName?#&lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+			
+				&lt;TABLE id="myTab" width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;TR style="display=table-header-group;" class="GridCaption" bgcolor="#FFFDE1"&gt;
+						&lt;TD align="left"&gt;Сотрудник&lt;/TD&gt;
+						&lt;TD align="center"&gt;Номер попытки&lt;/TD&gt;
+						&lt;TD align="center"&gt;Дата и время&lt;/TD&gt;
+					&lt;/TR&gt;
+					&lt;TBODY&gt;
+					&lt;xsl:for-each select="//Query2Table[not(aDoor=preceding-sibling::Query2Table/aDoor)]"&gt;
+						&lt;xsl:variable name="varFItem" select="aDoor[.]"/&gt;
+						&lt;tr class="RowDIRECT"&gt;
+							&lt;td class="UFR" colspan="3" align="center"&gt;&lt;xsl:value-of select="$varFItem" /&gt;&lt;/td&gt;
+						&lt;/tr&gt;
+						&lt;xsl:for-each select="//Query2Table[aDoor[.=$varFItem] and not(aUserName=preceding-sibling::Query2Table[aDoor[.=$varFItem]]/aUserName)]"&gt;
+							&lt;xsl:variable name="varUser" select="aUserName[.]"/&gt;
+							&lt;xsl:for-each select="//Query2Table[aDoor[.=$varFItem] and aUserName[.=$varUser]]"&gt;
+								&lt;TR class="GridValue"&gt;
+									&lt;xsl:choose&gt;
+										&lt;xsl:when test="count(preceding-sibling::Query2Table[aDoor[.=$varFItem] and aUserName[.=$varUser]])=0"&gt;
+											&lt;TD&gt;&lt;xsl:value-of select="$varUser" /&gt;&lt;/TD&gt;
+										&lt;/xsl:when&gt;
+										&lt;xsl:otherwise&gt;
+											&lt;TD&gt;&lt;/TD&gt;
+										&lt;/xsl:otherwise&gt;
+									&lt;/xsl:choose&gt;
+									&lt;TD align="center"&gt;&lt;xsl:value-of select="count(preceding-sibling::Query2Table[aDoor[.=$varFItem] and aUserName[.=$varUser]])+1" /&gt;&lt;/TD&gt;
+									&lt;TD align="center"&gt;&lt;xsl:value-of select="aDateTime" /&gt;&lt;/TD&gt;
+								&lt;/TR&gt;
+							&lt;/xsl:for-each&gt;
+						&lt;/xsl:for-each&gt;
+					&lt;/xsl:for-each&gt;
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Объект</Title>
+          <Name>pObjectName</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.05.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>03.06.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Несанкционированный доступ (группировка по сотрудникам)</Name>
+      <DateCreate>2010-06-04T12:56:34.2764898+03:00</DateCreate>
+      <DateLastModified>2015-07-24T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>SET dateformat dmy
+
+DECLARE @dtFrom datetime, @dtTo datetime
+SET @dtFrom = CAST(CONVERT (varchar(16), #?pDateFrom?#, 104) as datetime)
+SET @dtTo = DATEADD(d, 1, CAST(CONVERT (varchar(16), #?pDateTo?#, 104) as datetime))
+
+SELECT 
+	PTER.TERRA_NAME AS aDoor
+	,PP.LAST_NAME+' '+PP.FIRST_NAME+' '+PP.MIDDLE_NAME AS aUserName
+	,CONVERT(varchar(50), DATEADD(hour, 3, PTTL.TRAN_DATE), 120) AS aDateTime
+	,PTD.TRANTYPE_DESC AS TranDesc
+
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].dbo.[Person] AS PP ON PTTL.USR_ID=PP.PERS_ID
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES_DESC] AS PTD 
+			ON PTTL.TRANTYPE_ID = PTD.TRANTYPE_ID
+			AND PTD.LOCALE = 'RU'
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES] AS PTT
+			ON PTTL.TRANTYPE_ID = PTT.TRANTYPE_ID
+		INNER JOIN [Parsec3].[dbo].[TERRITORY] AS PTER
+			ON PTTL.COMP_ID = PTER.ITEM_ID
+
+WHERE
+	DATEADD(hour, 3, PTTL.TRAN_DATE) &gt;= @dtFrom
+	AND DATEADD(hour, 3, PTTL.TRAN_DATE) &lt; @dtTo
+	AND PTTL.TRANTYPE_ID != 590113 -- РќРµС‚ РґРѕСЃС‚СѓРїР° РїРѕ Р±Р»РѕРєРёСЂРѕРІРєРµ
+	AND PTT.[TRANCLASS_MASK] &lt; 129
+ORDER BY aUserName,aDoor,aDateTime
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:decimal-format decimal-separator=","/&gt;
+	&lt;xsl:template match="/"&gt;
+		&lt;HTML&gt;
+			&lt;STYLE TYPE="text/css"&gt;
+				.UFR {font-size: smaller; font-style: italic; color: darkblue}
+				.InRest {font-size: smaller; font-style: italic; color: green}
+				.ConvCurr {font-size: smaller; font-style: normal; color: darkblue}
+			&lt;/STYLE&gt;			
+			&lt;BODY bgcolor="#FFFFFF"&gt;  
+
+				&lt;P class="Caption"&gt;
+					Протокол попыток несанкционированного доступа сотрудников ХК "ИНТЕРРОС" в нережимные помещения
+					за период с 
+					&lt;font class="Param"&gt;
+						#?pDateFrom?#
+					&lt;/font&gt; до
+                    &lt;font class="Param"&gt;
+						#?pDateTo?#
+					&lt;/font&gt;	(групировка по сотрудникам)
+					&lt;TABLE width="50%"&gt;
+					&lt;TR&gt;&lt;TD align="right"&gt;Объект:&lt;/TD&gt;&lt;TD&gt;#?pObjectName?#&lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+			
+				&lt;TABLE id="myTab" width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;TR style="display=table-header-group;" class="GridCaption" bgcolor="#FFFDE1"&gt;
+						&lt;TD align="left"&gt;Помещение&lt;/TD&gt;
+						&lt;TD align="center"&gt;Номер попытки&lt;/TD&gt;
+						&lt;TD align="center"&gt;Дата и время&lt;/TD&gt;
+					&lt;/TR&gt;
+					&lt;TBODY&gt;
+					&lt;xsl:for-each select="//Query2Table[not(aUserName=preceding-sibling::Query2Table/aUserName)]"&gt;
+						&lt;xsl:variable name="varUserName" select="aUserName[.]"/&gt;
+						&lt;tr class="RowDIRECT"&gt;
+							&lt;td class="UFR" colspan="3" align="center"&gt;&lt;xsl:value-of select="$varUserName" /&gt;&lt;/td&gt;
+						&lt;/tr&gt;
+						&lt;xsl:for-each select="//Query2Table[aUserName[.=$varUserName] and not(aDoor=preceding-sibling::Query2Table[aUserName[.=$varUserName]]/aDoor)]"&gt;
+							&lt;xsl:variable name="varDoor" select="aDoor[.]"/&gt;
+							&lt;xsl:for-each select="//Query2Table[aUserName[.=$varUserName] and aDoor[.=$varDoor]]"&gt;
+								&lt;TR class="GridValue"&gt;
+									&lt;xsl:choose&gt;
+										&lt;xsl:when test="count(preceding-sibling::Query2Table[aUserName[.=$varUserName] and aDoor[.=$varDoor]])=0"&gt;
+											&lt;TD&gt;&lt;xsl:value-of select="$varDoor" /&gt;&lt;/TD&gt;
+										&lt;/xsl:when&gt;
+										&lt;xsl:otherwise&gt;
+											&lt;TD&gt;&lt;/TD&gt;
+										&lt;/xsl:otherwise&gt;
+									&lt;/xsl:choose&gt;
+									&lt;TD align="center"&gt;&lt;xsl:value-of select="count(preceding-sibling::Query2Table[aUserName[.=$varUserName] and aDoor[.=$varDoor]])+1" /&gt;&lt;/TD&gt;
+									&lt;TD align="center"&gt;&lt;xsl:value-of select="aDateTime" /&gt;&lt;/TD&gt;
+								&lt;/TR&gt;
+							&lt;/xsl:for-each&gt;
+						&lt;/xsl:for-each&gt;
+					&lt;/xsl:for-each&gt;
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Объект</Title>
+          <Name>pObjectName</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.05.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>03.06.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Балланс рабочего времени\Сотрудники на объекте</Name>
+      <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+SET dateformat dmy
+
+
+--DECLARE  @TInOut table 
+--	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+	
+--INSERT @TInOut
+SELECT
+	CONVERT(varchar(20), TrLog.aDT, 120) AS aDate_Time
+--	,TransLog.TranDesc AS aTrDescLog
+--	,TransDesc.TranDesc AS aTrDesc
+	,CASE 
+		WHEN TransLog.TranCode = 64 THEN 'да' 
+		ELSE 'нет'
+	 END AS  aIsWithin
+--	,TransLog.TranUser AS aUser
+	,Personel.FirstName 
+	 + ' ' + Personel.SecondName
+	 + ' ' + Personel.ThirdName AS aUserName
+	,TransLog.TranArea AS aDoor
+	,Doors.AreaName AS aDoor2
+--	,CONVERT(varchar(32), TrLog.aDT, 121), aUserID
+FROM 
+	(SELECT	MAX(TranDateTime) AS aDT, TranUserID AS aUserID
+	FROM TransLog 
+	WHERE CAST(CONVERT(varchar(16), TranDateTime, 104) as datetime) = CAST(CONVERT(varchar(16), GETDATE(), 104) as datetime)
+		AND TransLog.TranCode IN (64, 65)
+	GROUP BY TranUserID) AS TrLog
+		INNER JOIN TransLog ON TransLog.TranDateTime=TrLog.aDT AND TransLog.TranUserID=TrLog.aUserID
+		INNER JOIN Personel ON TransLog.TranUserID=Personel.ID_USER
+--		INNER JOIN TransDesc ON TransLog.TranCode=TransDesc.TranCode
+		INNER JOIN Doors ON TransLog.TranCtrlID=Doors.ID_DOOR
+WHERE
+	LEN(Personel.FirstName + Personel.SecondName + Personel.ThirdName) &gt; 0
+	#?pFltWhere?#
+ORDER BY 3
+
+SELECT CONVERT(varchar(20), GETDATE(), 120) AS aToday
+
+SELECT
+	CASE 
+		WHEN PATINDEX ('%64%', '#?pFltWhere?#') &gt; 0 THEN 1
+		WHEN PATINDEX ('%65%', '#?pFltWhere?#') &gt; 0 THEN 2
+		ELSE 0
+	END AS aFltCode
+	,CASE 
+		WHEN PATINDEX ('%64%', '#?pFltWhere?#') &gt; 0 THEN 'сотрудники на объекте'
+		WHEN PATINDEX ('%65%', '#?pFltWhere?#') &gt; 0 THEN 'сотрудники вне объекта'
+		ELSE 'все сотрудники'
+	END AS aFltText
+
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Сотрудники на/вне объект(е/а)&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+
+			&lt;STYLE TYPE="text/css"&gt;
+				.Param {font-size: smaller; font-style: normal; color: darkblue}
+			&lt;/STYLE&gt;			
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Предполагаемое нахождение сотрудника на/вне объект(е/а). 
+					&lt;BR/&gt;Время : 
+					&lt;font class="Param"&gt;
+						&lt;xsl:value-of select="Query2Table2/aToday" /&gt;
+					&lt;/font&gt;
+					&lt;BR/&gt;Фильтр: &lt;font class="Param"&gt;&lt;xsl:value-of select="Query2Table3/aFltText" /&gt;&lt;/font&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" width="3%"&gt;№&lt;/TD&gt;
+							&lt;TD align="left" width="40%"&gt;Ф.И.О. Сотрудника&lt;/TD&gt;
+							&lt;xsl:if test="Query2Table3/aFltCode[.]=0"&gt;
+								&lt;TD align="center" width="7%"&gt;Находится на объекте&lt;/TD&gt;
+							&lt;/xsl:if&gt;
+                            &lt;TD align="left" width="20%"&gt;Время последней фиксации&lt;/TD&gt;
+							&lt;TD align="left" width="30%"&gt;Место последней фиксации&lt;/TD&gt;
+						&lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+                            &lt;xsl:comment&gt;comments&lt;/xsl:comment&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aUserName" /&gt;&lt;/TD&gt;
+								&lt;xsl:if test="../Query2Table3/aFltCode[.]=0"&gt;
+									&lt;TD&gt;&lt;xsl:value-of select="aIsWithin" /&gt;&lt;/TD&gt;
+								&lt;/xsl:if&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDate_Time" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDoor" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>5</Number>
+          <Title>Фильтр</Title>
+          <Name>pFltWhere</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:все сотрудники</CurrentValue>
+          <DefaultValue />
+          <SelectValue>~все сотрудники
+ AND TransLog.TranCode = 64~сотрудники на объекте
+ AND TransLog.TranCode = 65~сотрудники вне объекта</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Запрос для программы отслеживания ввода инициаторов</Name>
+      <DateCreate>2015-08-26T15:51:49.8867187+03:00</DateCreate>
+      <DateLastModified>2015-08-28T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>MaryM</Author>
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+DECLARE @dtFrom datetime
+SET @dtFrom = #?pDateFrom?#
+
+-- Формируем таблицу заявок, ограниченных по параметру дате
+DECLARE @BPVISIT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
+aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
+INSERT INTO @BPVISIT
+SELECT
+-- Дата заказа
+DATEADD(hour, 3, VR.REQUEST_DATE) as aDateReq, 
+-- ФИО посетителя
+PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME as aVisitor, 
+-- ID посетителя
+VR.VISITOR_ID as aVisitorID, 
+VR.VISIT_PURPOSE as aVisitInit,  
+-- Дата начала действия заявки
+-- начало дня
+CAST(CONVERT(varchar(10), VR.ADMIT_START, 104) as datetime) as aAdmitFromDate, 
+--DATEADD(hour, 3, VR.ADMIT_START) as aAdmitFromDate, 
+-- Дата окончания действия заявки
+DATEADD(hour, 3, VR.ADMIT_END) as aAdmitToDate, 
+VR.REQUEST_NUM as aRequestNum, 
+-- Статус заявки
+-- 0 - Ожидание согласования
+-- 1 - Согласованв
+-- 2 - Отклонена
+-- 3 - Выдан пропуск
+-- 4 - Закрыта
+VR.REQUEST_STATUS as aStatusReq, 
+CASE WHEN VR.REQUEST_STATUS = 0 THEN 'ожидание согласования'
+		WHEN VR.REQUEST_STATUS = 1 THEN 'согласована'
+			WHEN VR.REQUEST_STATUS = 2 THEN 'отклонена'
+				WHEN VR.REQUEST_STATUS = 3 THEN 'выдан пропуск'
+					WHEN VR.REQUEST_STATUS = 4 THEN 'закрыта'
+ELSE '' END as aStatusReqName
+
+FROM 
+[Parsec3].dbo.[VISITOR_REQUEST] as VR
+	INNER JOIN [Parsec3].dbo.[Person] as PV ON PV.PERS_ID = VR.VISITOR_ID
+
+WHERE
+@dtFrom &lt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_START), 104) as datetime) 
+
+--- выдаем строки, в которых не встречается наших искомых слов
+DECLARE @TT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
+aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
+
+INSERT INTO @TT
+SELECT aDateReq, aVisitor, aVisitorID, aVisitInit, aAdmitFromDate, aAdmitToDate, aRequestNum, aStatusReq, aStatusReqName
+FROM @BPVISIT
+WHERE
+LEN(ISNULL(aVisitInit, '')) = 0
+OR
+(ISNULL(aVisitInit, '') NOT LIKE 
+			(CASE WHEN LEN('#?pStr1?#') &gt; 0 THEN '%#?pStr1?#%'
+					ELSE ''
+						END)
+AND ISNULL(aVisitInit, '') NOT LIKE 
+			(CASE WHEN LEN('#?pStr2?#') &gt; 0 THEN '%#?pStr2?#%'
+					ELSE ''
+						END)
+AND ISNULL(aVisitInit, '') NOT LIKE 
+			(CASE WHEN LEN('#?pStr3?#') &gt; 0 THEN '%#?pStr3?#%'
+					ELSE ''
+						END)
+AND ISNULL(aVisitInit, '') NOT LIKE
+			(CASE WHEN LEN('#?pStr4?#') &gt; 0 THEN '%#?pStr4?#%'
+					ELSE ''
+						END)
+)
+
+SELECT 
+'Заявка № ' + CAST(aRequestNum as varchar(255)) + ' [' + aVisitor + '] не содержит ключевых слов'
+FROM @TT
+ORDER BY aDateReq ASC
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Дата с:</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>03.08.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>Строка1</Title>
+          <Name>pStr1</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>мо</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>Строка2</Title>
+          <Name>pStr2</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>Строка3</Title>
+          <Name>pStr3</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>5</Number>
+          <Title>Строка4</Title>
+          <Name>pStr4</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Отчет о посетителях за период (инициатор - карта)</Name>
+      <DateCreate>2015-07-22T16:16:15.234375+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>MaryM</Author>
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+DECLARE @dtMin datetime
+DECLARE @dtMax datetime
+SET @dtMin = '01.01.1900'
+SET @dtMax = '01.01.2100'
+
+DECLARE @dtFrom datetime
+DECLARE @dtTo datetime
+SET @dtFrom = #?pDateFrom?#
+SET @dtTo = #?pDateTo?#
+--SET @dtFrom = '05.08.2015'
+--SET @dtTo = '05.08.2015'
+
+---Считываем документ
+-- Тип документа
+DECLARE @DOCT TABLE(aPers uniqueidentifier, aDocType varchar(255))
+INSERT INTO @DOCT	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Тип документа'
+-- Серия документа
+DECLARE @DOCS TABLE(aPers uniqueidentifier, aDocSer varchar(255))
+INSERT INTO @DOCS	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Серия документа'					 
+-- Номер документа
+DECLARE @DOCN TABLE(aPers uniqueidentifier, aDocNumber varchar(255))
+INSERT INTO @DOCN	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Номер документа'	
+-- Кем выдан документ
+DECLARE @DOCV TABLE(aPers uniqueidentifier, aDocMil varchar(255))												
+INSERT INTO @DOCV	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Кем выдан документ'
+-- Дата выдачи
+DECLARE @DOCD TABLE(aPers uniqueidentifier, aDocDate varchar(255))												
+INSERT INTO @DOCD	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Дата выдачи документа'	
+												
+-- ЗАЯВКИ ПОСЕТИТЕЛЕЙ В БЮРО ПРОПУСКОВ												
+DECLARE @BPVISIT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier, aVisitToWho varchar(255),  
+aVisitInitID uniqueidentifier, aTypeDoc varchar(255), aDoc varchar(255), aOperator varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255), aRevisor varchar(255), aActivator varchar(255))
+INSERT INTO @BPVISIT
+SELECT
+-- Дата заказа
+DATEADD(hour, 3, VR.REQUEST_DATE) as aDateReq, 
+-- ФИО посетителя
+PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME as aVisitor, 
+-- ID посетителя
+VR.VISITOR_ID as aVisitorID, 
+-- К кому
+Dep.aDepName as aVisitToWho,  
+-- Инициатор заявки
+-- Здесь выбираем из таб. TRANSLOG USR_ID того идентификатора, которого приложили к конкретному считывателю
+-- Самое первое после создания конкретной заявки 
+-- Это может быть любое событие, мы здесь не ограничиваем по типу
+-- Для этого обязательно должна быть выдержана последовательность действий оператора
+-- Создание заявки, ревизия (согласование), а уж потом все действий с другой заявкой
+(SELECT TOP 1 [USR_ID]
+	 FROM [Parsec3Trans].[dbo].[TRANSLOG]
+	 WHERE 
+		DATEADD(hour, 3, [TRAN_DATE]) &gt; DATEADD(hour, 3, VR.REQUEST_DATE)
+	   AND [COMP_ID] = '80015421-ec02-49bc-b41c-f0ceaf798e3c'  
+	 ORDER BY [TRAN_DATE] ASC
+	) as aVisitInitID, 
+-- Документ
+ISNULL(DT.aDocType, '') as aTypeDoc, 
+ISNULL(' ' + DS.aDocSer, '') 
++ ISNULL(' ' + DN.aDocNumber, '')
++ ISNULL(' выдан ' + DV.aDocMil, '')  
++ ISNULL(' ' + DD.aDocDate + ' г.', '') as aDoc, 
+-- Оператор
+DMO.FULLNAME as aOperator, 
+-- Дата начала действия заявки
+-- начало дня
+CAST(CONVERT(varchar(10), VR.ADMIT_START, 104) as datetime) as aAdmitFromDate, 
+--DATEADD(hour, 3, VR.ADMIT_START) as aAdmitFromDate, 
+-- Дата окончания действия заявки
+DATEADD(hour, 3, VR.ADMIT_END) as aAdmitToDate, 
+VR.REQUEST_NUM as aRequestNum, 
+-- Статус заявки
+-- 0 - Ожидание согласования
+-- 1 - Согласованв
+-- 2 - Отклонена
+-- 3 - Выдан пропуск
+-- 4 - Закрыта
+VR.REQUEST_STATUS as aStatusReq, 
+CASE WHEN VR.REQUEST_STATUS = 0 THEN 'ожидание согласования'
+		WHEN VR.REQUEST_STATUS = 1 THEN 'согласована'
+			WHEN VR.REQUEST_STATUS = 2 THEN 'отклонена'
+				WHEN VR.REQUEST_STATUS = 3 THEN 'выдан пропуск'
+					WHEN VR.REQUEST_STATUS = 4 THEN 'закрыта'
+ELSE '' END as aStatusReqName, 
+-- Ревизор заявки
+DMR.FULLNAME as aRevisor, 
+-- Активатор заявки
+DMA.FULLNAME as aActivator
+
+
+FROM 
+[Parsec3].dbo.[VISITOR_REQUEST] as VR
+	LEFT JOIN [Parsec3].dbo.[PERSON] as PV ON VR.VISITOR_ID = PV.PERS_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMR ON VR.REVISOR_ID = DMR.M_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMO ON VR.OPERATOR_ID = DMO.M_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMA ON VR.ACTIVATOR_ID = DMA.M_ID
+	LEFT JOIN @DOCT as DT ON DT.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCS as DS ON DS.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCN as DN ON DN.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCV as DV ON DV.aPers = VR.VISITOR_ID 
+	LEFT JOIN @DOCD as DD ON DD.aPers = VR.VISITOR_ID 
+	INNER JOIN
+			(
+			SELECT D1.ORG_ID AS DD, D1.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					#?pDep?#
+			UNION
+			SELECT D2.ORG_ID AS DD, D2.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D3.ORG_ID AS DD, D3.ORG_NAME as aDepName
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D4.ORG_ID AS DD, D4.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D5.ORG_ID AS DD, D5.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D6.ORG_ID AS DD, D6.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D7.ORG_ID AS DD, D7.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D7 ON D6.ORG_ID=D7.PARENT_ID
+					#?pDep?#
+		) AS DEP ON VR.OWNER_ID = DEP.DD
+WHERE
+@dtFrom &lt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_END), 104) as datetime) AND
+@dtTo &gt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_START), 104) as datetime) AND
+ISNULL(PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME, '') LIKE '%#?pPerson?#%'
+
+
+--1
+--SELECT * FROM @BPVISIT ORDER BY aDateReq, aVisitor
+
+-- ПРОХОДЫ (ТРАНЗАКЦИИ) с типом НОРМАЛЬНЫЙ ВХОД ПО КЛЮЧУ и НОРМАЛЬНЫЙ ВЫХОД ПО КЛЮЧУ
+DECLARE @TINOUT TABLE(aID int, aMask int, 
+					aTranTypeID int, 
+					aTranDescription varchar(255), 
+					aPersID uniqueidentifier, 
+					aTranDate datetime,  
+					aComp varchar(255))
+INSERT INTO @TINOUT						
+SELECT
+PTTL.rid as aID, 
+PTT.TRANCLASS_MASK as aMask, 
+PTTL.TRANTYPE_ID as aTranTypeID, 
+PTD.TRANTYPE_DESC as aTranDescription, 
+PTTL.USR_ID as aPersID, 
+DATEADD(hour, 3, PTTL.TRAN_DATE) as aTranDate, 
+PTER.TERRA_NAME as aComp
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES_DESC] AS PTD 
+			ON PTTL.TRANTYPE_ID = PTD.TRANTYPE_ID
+			AND PTD.LOCALE = 'RU'
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES] AS PTT
+			ON PTTL.TRANTYPE_ID = PTT.TRANTYPE_ID
+		INNER JOIN [Parsec3].[dbo].[TERRITORY] AS PTER
+			ON PTTL.COMP_ID = PTER.ITEM_ID
+
+WHERE
+	DATEADD(hour, 3, PTTL.TRAN_DATE) &gt;= @dtFrom
+	AND DATEADD(hour, 3, PTTL.TRAN_DATE) &lt; DATEADD(day, 1, @dtTo)
+	AND PTTL.TRANTYPE_ID IN(590144, 590145)					
+
+--2
+--SELECT * FROM @TINOUT ORDER BY 5 DESC
+
+-- Расшнуруем табличку проходов на входы и выходы
+DECLARE @TINOUT2 TABLE(
+					aID int, 
+					aPersID uniqueidentifier, 
+					aTranDateIn datetime,  
+					aTranDateOut datetime
+					)
+INSERT INTO @TINOUT2						
+SELECT
+TT.aID as aID, 
+TT.aPersID as aPersID, 
+CASE WHEN TT.aTranTypeID = 590144 THEN TT.aTranDate
+		ELSE NULL--@dtMin
+			END as aTranDateIn, 
+CASE WHEN TT.aTranTypeID = 590145 THEN TT.aTranDate
+		ELSE NULL --@dtMax
+			END as aTranDateOut
+FROM 
+	@TINOUT as TT
+ORDER BY 1, 2, 3
+
+--3
+--SELECT * FROM @TINOUT2 ORDER BY 1, 2, 3
+
+-- Сгруппируем по персоне и дате	
+DECLARE @TINOUT3 TABLE(aPersID uniqueidentifier, aDateIn datetime, aDateOut datetime)
+INSERT INTO @TINOUT3
+SELECT 
+TT1.aPersID, 
+ISNULL(MIN(TT1.aTranDateIn), @dtMin), 
+ISNULL(MAX(TT2.aTranDateOut), @dtMax)
+FROM 
+@TINOUT2 as TT1
+LEFT JOIN @TINOUT2 as TT2 ON TT1.aPersID = TT2.aPersID
+							and TT1.aTranDateIn &lt; TT2.aTranDateOut 
+													
+WHERE 
+NOT (TT1.aTranDateIn IS NULL AND TT2.aTranDateOut IS NULL)
+GROUP BY 
+TT1.aPersID
+
+ORDER BY 1 DESC
+
+--4
+--SELECT * FROM @TINOUT3
+
+--ВЫХОДНАЯ ТАБЛИЦА
+SELECT
+CONVERT(varchar(10), BP.aDateReq, 104) + ' ' + CAST(DATEPART(hour, BP.aDateReq) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, BP.aDateReq) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, BP.aDateReq) as varchar(2))
+					ELSE CAST(DATEPART(minute, BP.aDateReq) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE
+					WHEN LEN(CAST(DATEPART(ss, BP.aDateReq) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, BP.aDateReq) as varchar(2))
+					ELSE CAST(DATEPART(ss, BP.aDateReq) as varchar(2))
+					END 
+				as aDateReq, 
+TT.aPersID as aVisitorID, 
+BP.aVisitor as aVisitor,
+CASE WHEN TT.aDateIn = @dtMin THEN '' 
+		ELSE
+			CONVERT(varchar(10), TT.aDateIn, 104) + ' ' + CAST(DATEPART(hour, TT.aDateIn) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, TT.aDateIn) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, TT.aDateIn) as varchar(2))
+					ELSE CAST(DATEPART(minute, TT.aDateIn) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(ss, TT.aDateIn) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, TT.aDateIn) as varchar(2))
+					ELSE CAST(DATEPART(ss, TT.aDateIn) as varchar(2))
+					END
+		END as aIn, 
+CASE WHEN TT.aDateOut = @dtMax THEN ''
+		ELSE 
+			CONVERT(varchar(10), TT.aDateOut, 104) + ' ' + CAST(DATEPART(hour, TT.aDateOut) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, TT.aDateOut) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, TT.aDateOut) as varchar(2))
+					ELSE CAST(DATEPART(minute, TT.aDateOut) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(ss, TT.aDateOut) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, TT.aDateOut) as varchar(2))
+					ELSE CAST(DATEPART(ss, TT.aDateOut) as varchar(2))
+					END
+		END as aOut, 
+BP.aVisitToWho as aVisitToWho, 
+BP.aOperator as aOperator, 
+BP.aRequestNum as aRequestNum, 
+-- инициатор по входу в систему оператора
+--IR.FULLNAME as aVisitInit3,  
+PP.LAST_NAME as aVisitInit, 
+BP.aTypeDoc as aTypeDoc, 
+BP.aDoc as aDoc
+
+FROM
+@TINOUT3 as TT
+		INNER JOIN @BPVISIT AS BP ON TT.aPersID = BP.aVisitorID 
+			-- ограничения по началу и окончанию доступа из таблицы по посетителям
+		AND TT.aDateIn &lt;= BP.aAdmitToDate AND TT.aDateOut &gt;= BP.aAdmitFromDate
+		--AND BP.aStatusReq IN(3, 4)
+		
+		-- смысл это связки
+		-- в поле aVisitInitID записан код из таблицы персон, 
+		-- который по привязанной карте (одинаковой!) связываем с таб. DOMAIN_MEMBERSHIP
+		LEFT JOIN [Parsec3].dbo.[PERSON] as PP
+			ON PP.PERS_ID = BP.aVisitInitID
+	--	LEFT JOIN [Parsec3].dbo.[IDENTIFIER] as ID ON PP.Pers_ID = ID.PERS_ID 	
+	--	LEFT JOIN [Parsec3].dbo.[Domain_Membership] as DM ON ID.CODE = DM.CODE AND ID.PIN = DM.PIN	
+
+--WHERE BP.aVisitInitID = '139c5390-6177-4035-9a9f-76ba5924ff5d'
+#?pInit?#	
+
+ORDER BY TT.aDateIn	
+
+
+-- Выходная таблица 2 К КОМУ
+SELECT TOP 1
+	D1.ORG_NAME AS aDepName	
+FROM
+	(
+		SELECT NEWID() AS ORG_ID, ' В С Е' AS ORG_NAME
+		UNION ALL
+		SELECT DD.ORG_ID AS ORG_ID, DD.ORG_NAME AS ORG_NAME
+		FROM [Parsec3].[dbo].[ORGANIZATION] AS DD
+		WHERE LEN(DD.ORG_NAME) &gt; 0
+	) AS D1
+#?pDep?#
+
+-- Выходная таблица 3 Инициатор
+SELECT TOP 1
+	PP.LAST_NAME AS aInitName
+FROM
+	@BPVISIT as BP
+		LEFT JOIN [Parsec3].dbo.[PERSON] as PP
+			ON PP.PERS_ID = BP.aVisitInitID
+#?pInit?#			
+
+-- Выходная таблица 4 Персона
+SELECT TOP 1
+	BP.aVisitor as aPersName
+FROM @BPVISIT as BP
+WHERE BP.aVisitor LIKE '%#?pPerson?#%'
+		
+
+
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;STYLE TYPE="text/css"&gt;
+				.Caption{font-weight: bold; font-size: 16pt; text-align: center; color: #800040}
+				.Param{font-weight: bold; font-size: 14pt; color: black}
+			&lt;/STYLE&gt;
+			
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Отчет о посетителях за период&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Отчет о посетителях объекта за период 
+					с #?pDateFrom?#г. по #?pDateTo?#г.
+					&lt;TABLE width="50%"&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;К кому:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt;&lt;xsl:value-of select="Query2Table2/aDepName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;Инициатор:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt;&lt;xsl:value-of select="Query2Table3/aInitName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;Посетитель:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt; #?pPerson?# &lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;№ п/п&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="5%"&gt;Дата заявки&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="15%"&gt;Ф.И.О посетителя&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;К кому&lt;/TD&gt;
+                            &lt;TD align="center" colspan="2" width="10%"&gt;Предъявленный документ&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Инициатор заявки&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Заявку ввел&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Выдан пропуск №&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Время вх.&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Время вых.&lt;/TD&gt;
+						&lt;/TR&gt;
+                        &lt;TR&gt;
+                            &lt;TD align="center" width="3%"&gt;Тип документа&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Документ&lt;/TD&gt;
+                        &lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDateReq" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitor" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitToWho" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aTypeDoc" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDoc" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitInit" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aOperator" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aRequestNum" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aIn" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aOut" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>За период с</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.08.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>08.09.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>К кому</Title>
+          <Name>pDep</Name>
+          <Type>StrSelectTree</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:ВСЕ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>_idDep s ''
+;
+SELECT '', 'ВСЕ', 1, 'e6397305-b408-4993-8d5b-6e7f1cea6d69' 
+;
+SELECT
+	' WHERE CAST(D1.ORG_ID AS varchar(64)) = '''+CAST(Depart.ORG_ID AS varchar(64)) +''' ',
+	Depart.ORG_NAME,
+	COUNT(DC.ORG_ID),
+	CAST(Depart.ORG_ID AS varchar(64))
+
+FROM	
+	[Parsec3].[dbo].[ORGANIZATION] AS Depart 
+	LEFT JOIN [Parsec3].[dbo].[ORGANIZATION] AS DC 
+	ON Depart.ORG_ID=DC.PARENT_ID
+WHERE	
+	CAST(Depart.PARENT_ID AS varchar(64)) = #?_idDep?#
+GROUP BY
+	' D1.ORG_ID = '+CAST(Depart.ORG_ID AS varchar(64)),
+	Depart.ORG_NAME,
+	Depart.ORG_ID
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>Инициатор</Title>
+          <Name>pInit</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:ВСЕ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'WHERE BP.aVisitInitID = ''' + CAST(PP.PERS_ID as varchar(255)) + ''' ', PP.LAST_NAME
+FROM
+	[Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DD		
+		INNER JOIN [Parsec3].dbo.[IDENTIFIER] as ID ON ID.CODE = DD.CODE AND ID.PIN = DD.PIN
+		INNER JOIN [Parsec3].dbo.[Person] as PP ON PP.PERS_ID = ID.PERS_ID 
+WHERE
+	DD.DOMAIN_ID = 'f0490f45-7aef-430e-ba89-73d2a48e869f'
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>Посетитель</Title>
+          <Name>pPerson</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>Отчет о посетителях за период (инициатор - текст)</Name>
+      <DateCreate>2015-07-22T16:16:15.234375+03:00</DateCreate>
+      <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>MaryM</Author>
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+DECLARE @dtMin datetime
+DECLARE @dtMax datetime
+SET @dtMin = '01.01.1900'
+SET @dtMax = '01.01.2100'
+
+DECLARE @dtFrom datetime
+DECLARE @dtTo datetime
+SET @dtFrom = #?pDateFrom?#
+SET @dtTo = #?pDateTo?#
+--SET @dtFrom = '05.08.2015'
+--SET @dtTo = '05.08.2015'
+
+---Считываем документ
+-- Тип документа
+DECLARE @DOCT TABLE(aPers uniqueidentifier, aDocType varchar(255))
+INSERT INTO @DOCT	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Тип документа'
+-- Серия документа
+DECLARE @DOCS TABLE(aPers uniqueidentifier, aDocSer varchar(255))
+INSERT INTO @DOCS	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Серия документа'					 
+-- Номер документа
+DECLARE @DOCN TABLE(aPers uniqueidentifier, aDocNumber varchar(255))
+INSERT INTO @DOCN	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Номер документа'	
+-- Кем выдан документ
+DECLARE @DOCV TABLE(aPers uniqueidentifier, aDocMil varchar(255))												
+INSERT INTO @DOCV	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Кем выдан документ'
+-- Дата выдачи
+DECLARE @DOCD TABLE(aPers uniqueidentifier, aDocDate varchar(255))												
+INSERT INTO @DOCD	
+	SELECT  VV.PERS_ID, CAST(VV.EXTRA_FIELD_VALUE as varchar(255))
+	FROM
+		EXTRA_FIELD_VALUE AS VV 
+			INNER JOIN EXTRA_FIELD_TEMPLATE AS TT ON TT.FIELD_TEMPLATE_ID = VV.FIELD_TEMPLATE_ID 
+												AND TT.FIELD_TEMPLATE_NAME = 'Дата выдачи документа'	
+												
+-- ЗАЯВКИ ПОСЕТИТЕЛЕЙ В БЮРО ПРОПУСКОВ												
+DECLARE @BPVISIT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier, aVisitToWho varchar(255),  
+aVisitInit varchar(255), aTypeDoc varchar(255), aDoc varchar(255), aOperator varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255), aRevisor varchar(255), aActivator varchar(255))
+INSERT INTO @BPVISIT
+SELECT
+-- Дата заказа
+DATEADD(hour, 3, VR.REQUEST_DATE) as aDateReq, 
+-- ФИО посетителя
+PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME as aVisitor, 
+-- ID посетителя
+VR.VISITOR_ID as aVisitorID, 
+-- К кому
+Dep.aDepName as aVisitToWho, 
+-- Инициатор заявки 
+-- Может писаться 
+-- В поле КОММЕНТАРИЙ РЕВИЗОРА
+--VR.REVISOR_COMMENTS as aVisitInit,  
+-- В поле Цель визита
+--VR.VISIT_PURPOSE as aVisitInit,
+-- В поле описание посетителя
+VR.VISITOR_INFO as aVisitInit,   
+-- Документ
+ISNULL(DT.aDocType, '') as aTypeDoc, 
+ISNULL(' ' + DS.aDocSer, '') 
++ ISNULL(' ' + DN.aDocNumber, '')
++ ISNULL(' выдан ' + DV.aDocMil, '')  
++ ISNULL(' ' + DD.aDocDate + ' г.', '') as aDoc, 
+-- Оператор
+DMO.FULLNAME as aOperator, 
+-- Дата начала действия заявки
+-- начало дня
+CAST(CONVERT(varchar(10), VR.ADMIT_START, 104) as datetime) as aAdmitFromDate, 
+--DATEADD(hour, 3, VR.ADMIT_START) as aAdmitFromDate, 
+-- Дата окончания действия заявки
+DATEADD(hour, 3, VR.ADMIT_END) as aAdmitToDate, 
+VR.REQUEST_NUM as aRequestNum, 
+-- Статус заявки
+-- 0 - Ожидание согласования
+-- 1 - Согласованв
+-- 2 - Отклонена
+-- 3 - Выдан пропуск
+-- 4 - Закрыта
+VR.REQUEST_STATUS as aStatusReq, 
+CASE WHEN VR.REQUEST_STATUS = 0 THEN 'ожидание согласования'
+		WHEN VR.REQUEST_STATUS = 1 THEN 'согласована'
+			WHEN VR.REQUEST_STATUS = 2 THEN 'отклонена'
+				WHEN VR.REQUEST_STATUS = 3 THEN 'выдан пропуск'
+					WHEN VR.REQUEST_STATUS = 4 THEN 'закрыта'
+ELSE '' END as aStatusReqName, 
+-- Ревизор заявки
+DMR.FULLNAME as aRevisor, 
+-- Активатор заявки
+DMA.FULLNAME as aActivator
+
+
+FROM 
+[Parsec3].dbo.[VISITOR_REQUEST] as VR
+	LEFT JOIN [Parsec3].dbo.[PERSON] as PV ON VR.VISITOR_ID = PV.PERS_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMR ON VR.REVISOR_ID = DMR.M_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMO ON VR.OPERATOR_ID = DMO.M_ID
+	LEFT JOIN [Parsec3].dbo.[DOMAIN_MEMBERSHIP] as DMA ON VR.ACTIVATOR_ID = DMA.M_ID
+	LEFT JOIN @DOCT as DT ON DT.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCS as DS ON DS.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCN as DN ON DN.aPers = VR.VISITOR_ID
+	LEFT JOIN @DOCV as DV ON DV.aPers = VR.VISITOR_ID 
+	LEFT JOIN @DOCD as DD ON DD.aPers = VR.VISITOR_ID 
+	INNER JOIN
+			(
+			SELECT D1.ORG_ID AS DD, D1.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					#?pDep?#
+			UNION
+			SELECT D2.ORG_ID AS DD, D2.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D3.ORG_ID AS DD, D3.ORG_NAME as aDepName
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D4.ORG_ID AS DD, D4.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D5.ORG_ID AS DD, D5.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D6.ORG_ID AS DD, D6.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					#?pDep?#
+			UNION
+			SELECT D7.ORG_ID AS DD, D7.ORG_NAME as aDepName 
+				FROM [Parsec3].[dbo].[ORGANIZATION] AS D1 
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D2 ON D1.ORG_ID=D2.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D3 ON D2.ORG_ID=D3.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D4 ON D3.ORG_ID=D4.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D5 ON D4.ORG_ID=D5.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D6 ON D5.ORG_ID=D6.PARENT_ID
+					INNER JOIN [Parsec3].[dbo].[ORGANIZATION] AS D7 ON D6.ORG_ID=D7.PARENT_ID
+					#?pDep?#
+		) AS DEP ON VR.OWNER_ID = DEP.DD
+WHERE
+@dtFrom &lt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_END), 104) as datetime) AND
+@dtTo &gt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_START), 104) as datetime) AND
+ISNULL(VR.VISITOR_INFO, '') LIKE '%#?pInit?#%' AND 
+ISNULL(PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME, '') LIKE '%#?pPerson?#%'
+
+
+--1
+--SELECT * FROM @BPVISIT ORDER BY aDateReq, aVisitor
+
+-- ПРОХОДЫ (ТРАНЗАКЦИИ) с типом НОРМАЛЬНЫЙ ВХОД ПО КЛЮЧУ и НОРМАЛЬНЫЙ ВЫХОД ПО КЛЮЧУ
+DECLARE @TINOUT TABLE(aID int, aMask int, 
+					aTranTypeID int, 
+					aTranDescription varchar(255), 
+					aPersID uniqueidentifier, 
+					aTranDate datetime,  
+					aComp varchar(255))
+INSERT INTO @TINOUT						
+SELECT
+PTTL.rid as aID, 
+PTT.TRANCLASS_MASK as aMask, 
+PTTL.TRANTYPE_ID as aTranTypeID, 
+PTD.TRANTYPE_DESC as aTranDescription, 
+PTTL.USR_ID as aPersID, 
+DATEADD(hour, 3, PTTL.TRAN_DATE) as aTranDate, 
+PTER.TERRA_NAME as aComp
+FROM 
+	[Parsec3Trans].dbo.[TransLog] AS PTTL
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES_DESC] AS PTD 
+			ON PTTL.TRANTYPE_ID = PTD.TRANTYPE_ID
+			AND PTD.LOCALE = 'RU'
+		INNER JOIN [Parsec3].[dbo].[TRANTYPES] AS PTT
+			ON PTTL.TRANTYPE_ID = PTT.TRANTYPE_ID
+		INNER JOIN [Parsec3].[dbo].[TERRITORY] AS PTER
+			ON PTTL.COMP_ID = PTER.ITEM_ID
+
+WHERE
+	DATEADD(hour, 3, PTTL.TRAN_DATE) &gt;= @dtFrom
+	AND DATEADD(hour, 3, PTTL.TRAN_DATE) &lt; DATEADD(day, 1, @dtTo)
+	AND PTTL.TRANTYPE_ID IN(590144, 590145)					
+
+--2
+--SELECT * FROM @TINOUT ORDER BY 5 DESC
+
+-- Расшнуруем табличку проходов на входы и выходы
+DECLARE @TINOUT2 TABLE(
+					aID int, 
+					aPersID uniqueidentifier, 
+					aTranDateIn datetime,  
+					aTranDateOut datetime
+					)
+INSERT INTO @TINOUT2						
+SELECT
+TT.aID as aID, 
+TT.aPersID as aPersID, 
+CASE WHEN TT.aTranTypeID = 590144 THEN TT.aTranDate
+		ELSE NULL--@dtMin
+			END as aTranDateIn, 
+CASE WHEN TT.aTranTypeID = 590145 THEN TT.aTranDate
+		ELSE NULL --@dtMax
+			END as aTranDateOut
+FROM 
+	@TINOUT as TT
+ORDER BY 1, 2, 3
+
+--3
+--SELECT * FROM @TINOUT2 ORDER BY 1, 2, 3
+
+-- Сгруппируем по персоне и дате	
+DECLARE @TINOUT3 TABLE(aPersID uniqueidentifier, aDateIn datetime, aDateOut datetime)
+INSERT INTO @TINOUT3
+SELECT 
+TT1.aPersID, 
+ISNULL(MIN(TT1.aTranDateIn), @dtMin), 
+ISNULL(MAX(TT2.aTranDateOut), @dtMax)
+FROM 
+@TINOUT2 as TT1
+LEFT JOIN @TINOUT2 as TT2 ON TT1.aPersID = TT2.aPersID
+							--and CONVERT(varchar(10), TT1.aTranDateIn, 104) = CONVERT(varchar(10), TT2.aTranDateOut, 104)
+							and TT1.aTranDateIn &lt; TT2.aTranDateOut 
+													
+WHERE 
+NOT (TT1.aTranDateIn IS NULL AND TT2.aTranDateOut IS NULL)
+GROUP BY 
+TT1.aPersID
+
+ORDER BY 1 DESC
+
+--4
+--SELECT * FROM @TINOUT3
+
+--ВЫХОДНАЯ ТАБЛИЦА
+SELECT
+CONVERT(varchar(10), BP.aDateReq, 104) + ' ' + CAST(DATEPART(hour, BP.aDateReq) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, BP.aDateReq) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, BP.aDateReq) as varchar(2))
+					ELSE CAST(DATEPART(minute, BP.aDateReq) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE
+					WHEN LEN(CAST(DATEPART(ss, BP.aDateReq) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, BP.aDateReq) as varchar(2))
+					ELSE CAST(DATEPART(ss, BP.aDateReq) as varchar(2))
+					END 
+				as aDateReq, 
+TT.aPersID as aVisitorID, 
+BP.aVisitor as aVisitor,
+CASE WHEN TT.aDateIn = @dtMin THEN '' 
+		ELSE
+			CONVERT(varchar(10), TT.aDateIn, 104) + ' ' + CAST(DATEPART(hour, TT.aDateIn) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, TT.aDateIn) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, TT.aDateIn) as varchar(2))
+					ELSE CAST(DATEPART(minute, TT.aDateIn) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(ss, TT.aDateIn) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, TT.aDateIn) as varchar(2))
+					ELSE CAST(DATEPART(ss, TT.aDateIn) as varchar(2))
+					END
+		END as aIn, 
+CASE WHEN TT.aDateOut = @dtMax THEN ''
+		ELSE 
+			CONVERT(varchar(10), TT.aDateOut, 104) + ' ' + CAST(DATEPART(hour, TT.aDateOut) as varchar(2)) + ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(minute, TT.aDateOut) as varchar(2))) = 1 
+						THEN '0' + CAST(DATEPART(minute, TT.aDateOut) as varchar(2))
+					ELSE CAST(DATEPART(minute, TT.aDateOut) as varchar(2))
+					END 
+				+ ':' 
+				+ CASE 
+					WHEN LEN(CAST(DATEPART(ss, TT.aDateOut) as varchar(2))) = 1
+						THEN '0' + CAST(DATEPART(ss, TT.aDateOut) as varchar(2))
+					ELSE CAST(DATEPART(ss, TT.aDateOut) as varchar(2))
+					END
+		END as aOut, 
+BP.aVisitToWho as aVisitToWho, 
+BP.aOperator as aOperator, 
+BP.aRequestNum as aRequestNum, 
+BP.aVisitInit as aVisitInit, 
+BP.aTypeDoc as aTypeDoc, 
+BP.aDoc as aDoc
+
+FROM
+@TINOUT3 as TT
+		INNER JOIN @BPVISIT AS BP ON TT.aPersID = BP.aVisitorID 
+			-- ограничения по началу и окончанию доступа из таблицы по посетителям
+		AND TT.aDateIn &lt;= BP.aAdmitToDate AND TT.aDateOut &gt;= BP.aAdmitFromDate
+
+ORDER BY TT.aDateIn	
+
+
+-- Выходная таблица 2 К КОМУ
+SELECT TOP 1
+	D1.ORG_NAME AS aDepName	
+FROM
+	(
+		SELECT NEWID() AS ORG_ID, ' В С Е' AS ORG_NAME
+		UNION ALL
+		SELECT DD.ORG_ID AS ORG_ID, DD.ORG_NAME AS ORG_NAME
+		FROM [Parsec3].[dbo].[ORGANIZATION] AS DD
+		WHERE LEN(DD.ORG_NAME) &gt; 0
+	) AS D1
+#?pDep?#
+
+		
+
+
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;STYLE TYPE="text/css"&gt;
+				.Caption{font-weight: bold; font-size: 16pt; text-align: center; color: #800040}
+				.Param{font-weight: bold; font-size: 14pt; color: black}
+			&lt;/STYLE&gt;
+			
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Отчет о посетителях за период&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Отчет о посетителях объекта за период 
+					с #?pDateFrom?#г. по #?pDateTo?#г.
+					&lt;TABLE width="50%"&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;К кому:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt;&lt;xsl:value-of select="Query2Table2/aDepName" /&gt;&lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;Инициатор:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt; #?pInit?# &lt;/TD&gt;&lt;/TR&gt;
+					&lt;TR class="Param"&gt;&lt;TD align="left" width="20%"&gt;Посетитель:&lt;/TD&gt;&lt;TD align="left" width="80%"&gt; #?pPerson?# &lt;/TD&gt;&lt;/TR&gt;
+					&lt;/TABLE&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;№ п/п&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="5%"&gt;Дата заявки&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="15%"&gt;Ф.И.О посетителя&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;К кому&lt;/TD&gt;
+                            &lt;TD align="center" colspan="2" width="10%"&gt;Предъявленный документ&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Инициатор заявки&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="10%"&gt;Заявку ввел&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Выдан пропуск №&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Время вх.&lt;/TD&gt;
+							&lt;TD align="center" rowspan="2" width="3%"&gt;Время вых.&lt;/TD&gt;
+						&lt;/TR&gt;
+                        &lt;TR&gt;
+                            &lt;TD align="center" width="3%"&gt;Тип документа&lt;/TD&gt;
+							&lt;TD align="center" width="10%"&gt;Документ&lt;/TD&gt;
+                        &lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDateReq" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitor" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitToWho" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aTypeDoc" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDoc" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aVisitInit" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aOperator" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aRequestNum" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aIn" /&gt;&lt;/TD&gt;
+								&lt;TD align="center"&gt;&lt;xsl:value-of select="aOut" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>За период с</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>01.08.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>по</Title>
+          <Name>pDateTo</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>08.09.2015</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>К кому</Title>
+          <Name>pDep</Name>
+          <Type>StrSelectTree</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:ВСЕ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>_idDep s ''
+;
+SELECT '', 'ВСЕ', 1, 'e6397305-b408-4993-8d5b-6e7f1cea6d69' 
+;
+SELECT
+	' WHERE CAST(D1.ORG_ID AS varchar(64)) = '''+CAST(Depart.ORG_ID AS varchar(64)) +''' ',
+	Depart.ORG_NAME,
+	COUNT(DC.ORG_ID),
+	CAST(Depart.ORG_ID AS varchar(64))
+
+FROM	
+	[Parsec3].[dbo].[ORGANIZATION] AS Depart 
+	LEFT JOIN [Parsec3].[dbo].[ORGANIZATION] AS DC 
+	ON Depart.ORG_ID=DC.PARENT_ID
+WHERE	
+	CAST(Depart.PARENT_ID AS varchar(64)) = #?_idDep?#
+GROUP BY
+	' D1.ORG_ID = '+CAST(Depart.ORG_ID AS varchar(64)),
+	Depart.ORG_NAME,
+	Depart.ORG_ID
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>Инициатор</Title>
+          <Name>pInit</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>жена</CurrentValue>
+          <DefaultValue />
+          <SelectValue>
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>Посетитель</Title>
+          <Name>pPerson</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+  </Queries>
+</Session>

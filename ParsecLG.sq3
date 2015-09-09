@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<Session xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>0</Code>
+  <Title>Parsec</Title>
+  <Note>Server=WAR05110009\SQLEXPRESS;
+
+uid=sa; pwd=parsec;
+
+Server=SCMA-SRV-BS25\PARSECDB;
+uid=sa; pwd=parsec;
+Server=SCMA-SRV-BY09\PARSECDB;
+</Note>
+  <DBConnection>Provider=SQLOLEDB;
+DataBase=Parsec3;
+Server=CSQL-ST\PARSEC3;
+Integrated Security=SSPI; Persist Security Info=false;
+Connect Timeout=90;
+</DBConnection>
+  <ParamBegDelim>#?</ParamBegDelim>
+  <ParamEndDelim>?#</ParamEndDelim>
+  <Hash>eeb528fb4624092c109330428f88663c</Hash>
+  <ImagePath />
+  <ImageName />
+  <Params />
+  <Queries>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\COUNT records in all tables</Name>
+      <DateCreate>2010-06-02T12:00:02.8954511+04:00</DateCreate>
+      <DateLastModified>2014-06-30T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>DECLARE tables_cursor CURSOR
+   FOR
+   SELECT name FROM sysobjects WHERE type = 'U'
+OPEN tables_cursor
+DECLARE @tablename sysname
+FETCH NEXT FROM tables_cursor INTO @tablename
+	WHILE (@@FETCH_STATUS &lt;&gt; -1)
+	BEGIN
+	   /* A @@FETCH_STATUS of -2 means that the row has been deleted.
+	   There is no need to test for this because this loop drops all
+	   user-defined tables.   */
+	   EXEC ('SELECT '''+@tablename+''',  COUNT(*) FROM ' + @tablename)
+	   FETCH NEXT FROM tables_cursor INTO @tablename
+	END
+
+DEALLOCATE tables_cursor
+
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Depart</Name>
+      <DateCreate>2010-06-03T16:34:25.0180041+04:00</DateCreate>
+      <DateLastModified>2014-07-01T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT 
+	--ISNULL(CAST(DP.ID_DEP AS varchar(10))+'~', '')+CAST(DC.ID_DEP AS varchar(10)) AS aPath, 
+	--DP.DeptName, 
+	DC.* 
+FROM 
+	Depart AS DC 
+	--	LEFT JOIN Depart AS DP ON DC.Parent_ID=DP.ID_DEP
+ORDER BY 
+	1</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Dep-Dep</Name>
+      <DateCreate>2010-08-31T10:22:12.266373+04:00</DateCreate>
+      <DateLastModified>2014-07-01T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>
+SELECT D1.ID_DEP AS DD 
+	FROM Depart AS D1 
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D2.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D3.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D4.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+	--WHERE D1.ID_DEP = 47
+UNION
+SELECT D5.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+	--WHERE D1.ID_DEP = 47
+SELECT D6.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+		INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+	--WHERE D1.ID_DEP = 47
+SELECT D7.ID_DEP AS DD 
+	FROM Depart AS D1 
+		INNER JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+		INNER JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+		INNER JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+		INNER JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+		INNER JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+		INNER JOIN Depart AS D7 ON D6.ID_DEP=D7.Parent_ID
+	--WHERE D1.ID_DEP = 47
+
+
+
+
+/*
+SELECT 
+	ID_DEP)))))) AS DD
+	
+	,D7.ID_DEP 
+	,D6.ID_DEP
+	,D5.ID_DEP
+	,D4.ID_DEP
+	,D3.ID_DEP
+	,D2.ID_DEP 
+	,D1.ID_DEP
+	
+FROM Depart AS D1 
+	LEFT JOIN Depart AS D2 ON D1.ID_DEP=D2.Parent_ID
+	LEFT JOIN Depart AS D3 ON D2.ID_DEP=D3.Parent_ID
+	LEFT JOIN Depart AS D4 ON D3.ID_DEP=D4.Parent_ID
+	LEFT JOIN Depart AS D5 ON D4.ID_DEP=D5.Parent_ID
+	LEFT JOIN Depart AS D6 ON D5.ID_DEP=D6.Parent_ID
+	LEFT JOIN Depart AS D7 ON D6.ID_DEP=D7.Parent_ID
+WHERE
+	D1.ID_DEP = 47
+	
+ORDER BY 1
+*/</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Doors</Name>
+      <DateCreate>2010-06-03T09:53:31.2487447+04:00</DateCreate>
+      <DateLastModified>2010-06-03T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT [ID_DOOR]
+      ,[ADDRESS_ID]
+      ,[AreaName]
+      ,[DoorDescriptor]
+      ,[ContrEnabled]
+      ,[LockTime]
+      ,[DoorOpenTime]
+      ,[ExitTime]
+      ,[AlarmTime]
+      ,[ReleDelay]
+      ,[ReleTime]
+      ,[ReleTypeLatch]
+      ,[HasSecondReader]
+      ,[HasLockSwitch]
+      ,[HasRTESwitch]
+      ,[SoundIfDoorOpen]
+      ,[HasDoorContact]
+      ,[DoorAlarmNoArmed]
+      ,[ResetLockByDC]
+      ,[CheckAUXInput]
+      ,[ReleOnAlarm]
+      ,[ReleOnDoorForced]
+      ,[ReleOnNoEntry]
+      ,[ReleOnEntry]
+      ,[ReleOnExit]
+      ,[ReleOnLineWork]
+      ,[OnCardLed]
+      ,[OnCardBeep]
+      ,[AuxHas4State]
+      ,[DCHas4State]
+      ,[PowerLED]
+      ,[RealAccess]
+      ,[GraphPlan]
+      ,[OperInstruction]
+      ,[AutoClose]
+      ,[SoundFileName]
+      ,[GraphPlanLow]
+      ,[GraphPlanHigh]
+      ,[Turnstile]
+      ,[Perimeter]
+      ,[TimeInSec]
+      ,[APB_Enabled]
+      ,[ReleExtraType]
+      ,[HasExternalReader]
+      ,[APBinOffLine]
+      ,[ContrType]
+      ,[KSound]
+      ,[KLight]
+      ,[KBlocking]
+      ,[KLightTime]
+      ,[KOffTime]
+      ,[KConfig]
+      ,[CheckAUXInput2]
+      ,[AuxHas4State2]
+      ,[AlarmSensor24h]
+      ,[RegistrationMode]
+      ,[HasDRTESwitch]
+      ,[HasCardRead]
+      ,[CardBox]
+      ,[Deleted]
+      ,[LastUpdate]
+      ,[PhoneNumber]
+      ,[CardRecieverMode]
+  FROM [ParsecDB].[dbo].[Doors]
+  </Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Person</Name>
+      <DateCreate>2010-06-02T13:56:01.7525553+04:00</DateCreate>
+      <DateLastModified>2014-06-30T00:00:00+04:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT * 
+FROM Person
+WHERE TYPE_ID = #?pType?#</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Тип объекта</Title>
+          <Name>pType</Name>
+          <Type>StrSelectList</Type>
+          <Inset>false</Inset>
+          <CurrentValue>b573219c-5c66-4359-890b-75bc6ba24f4f:b573219c-5c66-4359-890b-75bc6ba24f4f</CurrentValue>
+          <DefaultValue />
+          <SelectValue>SELECT DISTINCT
+TYPE_ID, TYPE_ID
+FROM dbo.Person</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\Tables</Name>
+      <DateCreate>2010-06-02T11:43:45.4476455+04:00</DateCreate>
+      <DateLastModified>2014-07-01T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SELECT * 
+FROM dbo.sysobjects
+WHERE
+	xtype = 'U'
+ORDER BY
+	name
+	</Text>
+      <XSLT />
+      <ImageName />
+      <Params />
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>_System\TransLog</Name>
+      <DateCreate>2010-06-02T13:46:20.8646032+04:00</DateCreate>
+      <DateLastModified>2010-06-08T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>SET dateformat dmy
+
+SELECT 
+	[ID_TRAN]
+	,CONVERT(varchar(50), [TranDateTime], 121) AS TranDateTime
+	,[TranCode]
+	,[IsAlarm]
+	,[TranDesc]
+	,[TranArea]
+	,[TranUser]
+	,[TranCtrlID]
+	,[TranUserID]
+	,[TranOperID]
+	,[Param1]
+	,[Param2]
+	,[OperDateTime]
+	,[Arch_ID]
+FROM 
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+#?pFltUser?#
+#?pFltLock?#
+--	AND TranCode IN (32,33,34)
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>2</Number>
+          <Title>За период с (&gt;=)</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>08.06.2010</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>до (&lt;)</Title>
+          <Name>pToDate</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>09.06.2010</CurrentValue>
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>6</Number>
+          <Title>User</Title>
+          <Name>pFltUser</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:ВСЕ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'AND TranUserID = '+CAST(TranUserID AS varchar(8)),
+	TranUser
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+ORDER BY 2
+</SelectValue>
+        </Param>
+        <Param>
+          <Number>8</Number>
+          <Title>Lock</Title>
+          <Name>pFltLock</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue>~ВСЕ
+;
+SET dateformat dmy
+SELECT DISTINCT
+	'AND TranCtrlID = '+CAST(TranCtrlID AS varchar(25)),
+	TranArea
+FROM
+	TransLog
+WHERE
+	TranDateTime &gt;= #?pDateFrom?#
+	AND TranDateTime &lt; #?pToDate?#
+ORDER BY 2
+</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>ForParsec2.5\Сотрудники на объекте</Name>
+      <DateCreate>2010-06-02T13:46:20.8646032+04:00</DateCreate>
+      <DateLastModified>2014-07-01T00:00:00+04:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>M.Tor</Author>
+      <Note />
+      <Text>
+SET dateformat dmy
+
+
+--DECLARE  @TInOut table 
+--	(aDate varchar(20), aTimeIn datetime, aTimeOut datetime, aUserID int, aUser varchar(255))
+	
+--INSERT @TInOut
+SELECT
+	CONVERT(varchar(20), TrLog.aDT, 120) AS aDate_Time
+--	,TransLog.TranDesc AS aTrDescLog
+--	,TransDesc.TranDesc AS aTrDesc
+	,CASE 
+		WHEN TransLog.TranCode = 64 THEN 'да' 
+		ELSE 'нет'
+	 END AS  aIsWithin
+--	,TransLog.TranUser AS aUser
+	,Personel.FirstName 
+	 + ' ' + Personel.SecondName
+	 + ' ' + Personel.ThirdName AS aUserName
+	,TransLog.TranArea AS aDoor
+	,Doors.AreaName AS aDoor2
+--	,CONVERT(varchar(32), TrLog.aDT, 121), aUserID
+FROM 
+	(SELECT	MAX(TranDateTime) AS aDT, TranUserID AS aUserID
+	FROM TransLog 
+	WHERE CAST(CONVERT(varchar(16), TranDateTime, 104) as datetime) = CAST(CONVERT(varchar(16), GETDATE(), 104) as datetime)
+		AND TransLog.TranCode IN (64, 65)
+	GROUP BY TranUserID) AS TrLog
+		INNER JOIN TransLog ON TransLog.TranDateTime=TrLog.aDT AND TransLog.TranUserID=TrLog.aUserID
+		INNER JOIN Personel ON TransLog.TranUserID=Personel.ID_USER
+--		INNER JOIN TransDesc ON TransLog.TranCode=TransDesc.TranCode
+		INNER JOIN Doors ON TransLog.TranCtrlID=Doors.ID_DOOR
+WHERE
+	LEN(Personel.FirstName + Personel.SecondName + Personel.ThirdName) &gt; 0
+	#?pFltWhere?#
+ORDER BY 3
+
+SELECT CONVERT(varchar(20), GETDATE(), 120) AS aToday
+
+SELECT
+	CASE 
+		WHEN PATINDEX ('%64%', '#?pFltWhere?#') &gt; 0 THEN 1
+		WHEN PATINDEX ('%65%', '#?pFltWhere?#') &gt; 0 THEN 2
+		ELSE 0
+	END AS aFltCode
+	,CASE 
+		WHEN PATINDEX ('%64%', '#?pFltWhere?#') &gt; 0 THEN 'сотрудники на объекте'
+		WHEN PATINDEX ('%65%', '#?pFltWhere?#') &gt; 0 THEN 'сотрудники вне объекта'
+		ELSE 'все сотрудники'
+	END AS aFltText
+
+</Text>
+      <XSLT>&lt;?xml version="1.0" encoding="Windows-1251" ?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:output method="xml" version="1.0" encoding="windows-1251" indent="yes"/&gt;
+	&lt;xsl:template match="/Query2DS"&gt;
+		&lt;HTML&gt;
+			&lt;HEAD&gt;
+				&lt;TITLE&gt;Сотрудники на/вне объект(е/а)&lt;/TITLE&gt;
+			&lt;/HEAD&gt;         
+
+			&lt;STYLE TYPE="text/css"&gt;
+				.Param {font-size: smaller; font-style: normal; color: darkblue}
+			&lt;/STYLE&gt;			
+            
+			&lt;BODY bgcolor="#FFFFFF"&gt;
+				&lt;P class="Caption"&gt;
+					Предполагаемое нахождение сотрудника на/вне объект(е/а). 
+					&lt;BR/&gt;Время : 
+					&lt;font class="Param"&gt;
+						&lt;xsl:value-of select="Query2Table2/aToday" /&gt;
+					&lt;/font&gt;
+					&lt;BR/&gt;Фильтр: &lt;font class="Param"&gt;&lt;xsl:value-of select="Query2Table3/aFltText" /&gt;&lt;/font&gt;
+				&lt;/P&gt;
+				
+				&lt;TABLE width="100%" border="1" ID="GridTable" onclick="sortColumn(event)"&gt;
+					&lt;!-- чтобы шапка таблицы появлялась на каждой странице при печати --&gt;
+					&lt;THEAD class="GridCaption"&gt;                     
+						&lt;TR&gt;
+							&lt;TD align="center" width="3%"&gt;№&lt;/TD&gt;
+							&lt;TD align="left" width="40%"&gt;Ф.И.О. Сотрудника&lt;/TD&gt;
+							&lt;xsl:if test="Query2Table3/aFltCode[.]=0"&gt;
+								&lt;TD align="center" width="7%"&gt;Находится на объекте&lt;/TD&gt;
+							&lt;/xsl:if&gt;
+                            &lt;TD align="left" width="20%"&gt;Время последней фиксации&lt;/TD&gt;
+							&lt;TD align="left" width="30%"&gt;Место последней фиксации&lt;/TD&gt;
+						&lt;/TR&gt;
+					&lt;/THEAD&gt;
+					&lt;TBODY id="TBody"&gt;
+						&lt;xsl:for-each select="Query2Table"&gt;
+                            &lt;xsl:comment&gt;comments&lt;/xsl:comment&gt;
+							&lt;TR class="GridValue"&gt;
+								&lt;TD&gt;&lt;xsl:number/&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aUserName" /&gt;&lt;/TD&gt;
+								&lt;xsl:if test="../Query2Table3/aFltCode[.]=0"&gt;
+									&lt;TD&gt;&lt;xsl:value-of select="aIsWithin" /&gt;&lt;/TD&gt;
+								&lt;/xsl:if&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDate_Time" /&gt;&lt;/TD&gt;
+								&lt;TD&gt;&lt;xsl:value-of select="aDoor" /&gt;&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/xsl:for-each&gt;                        
+					&lt;/TBODY&gt;
+				&lt;/TABLE&gt;
+			&lt;/BODY&gt;
+		&lt;/HTML&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</XSLT>
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>5</Number>
+          <Title>Фильтр</Title>
+          <Name>pFltWhere</Name>
+          <Type>StrSelectList</Type>
+          <Inset>true</Inset>
+          <CurrentValue>:все сотрудники</CurrentValue>
+          <DefaultValue />
+          <SelectValue>~все сотрудники
+ AND TransLog.TranCode = 64~сотрудники на объекте
+ AND TransLog.TranCode = 65~сотрудники вне объекта</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>ForParsec3\Менеджер групп new</Name>
+      <DateCreate>2014-02-25T17:49:09.4552114+04:00</DateCreate>
+      <DateLastModified>2014-07-09T00:00:00+04:00</DateLastModified>
+      <Hidden>true</Hidden>
+      <Author />
+      <Note />
+      <Text>--use [parsec3]
+--go
+--DROP TABLE #TABL
+
+DECLARE  @TABL1 table 
+	(aLastName varchar(255), aFirstName varchar(255), aMiddleName varchar(255), aPrimID varchar(255), aOrgID varchar(255))
+
+INSERT @TABL1
+SELECT P.LAST_NAME, P.FIRST_NAME, P.MIDDLE_NAME, P.PRIMARY_IDENTIFIER , P.ORG_ID 
+--INTO #TABL
+FROM PARSEC3.dbo.PERSON P
+where  pers_id in (select pers_id from identifier
+where accgroup_id in (select accgroup_id from compgroup 
+where compgroup_id in(select compgroup_id from compgroup_components
+where comp_id =(select comp_id from component
+where comp_desc= #?aParam?#))))
+
+---Р—РґРµСЃСЊ РІРјРµСЃС‚Рѕ 'РґРІРµСЂСЊ С‚РµСЃС‚' РІСЃС‚Р°РІР»СЏРµРј СЃРІРѕРµ РёРјСЏ РґРІРµСЂРё, РєРѕС‚РѕСЂРѕРµ Р±РµСЂРµРј РёР· СЂР°Р·РґРµР»Р° 
+----РћР±РѕСЂСѓРґРѕРІР°РЅРёРµ\РљРѕРЅС‚СЂРѕР»Р»РµСЂ\РљРѕРјРїРѕРЅРµРЅС‚С‹\РћРїРёСЃР°РЅРёРµ СЃРј. attach.. 
+---РћРїРёСЃР°РЅРёРµ СЌС‚Рѕ РІ РєРѕРјРїРѕРЅРµРЅС‚Р°С…  РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ Рё Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹Рј..
+
+--DROP TABLE #TABL2
+--SELECT #tabl.LAST_NAME,#tabl.FIRST_NAME,#tabl.MIDDLE_NAME,#tabl.PRIMARY_IDENTIFIER , ORGANIZATION.ORG_NAME
+--INTO #TABL2
+--FROM #tabl left outer join  ORGANIZATION
+--ON #tabl.ORG_ID=ORGANIZATION.ORG_ID
+
+--DROP TABLE #TABL3
+--SELECT #TABL2.LAST_NAME,#TABL2.FIRST_NAME,#TABL2.MIDDLE_NAME,#TABL2.ORG_NAME , IDENTIFIER.ACCGROUP_ID
+--INTO #TABL3
+--FROM #TABL2 left outer join  IDENTIFIER ON #TABL2.PRIMARY_IDENTIFIER=IDENTIFIER.IDENTIFIER_ID
+
+--SELECT #TABL3.LAST_NAME as 'Р¤Р°РјРёР»РёСЏ',
+--#TABL3.FIRST_NAME 'РРјСЏ ',
+--#TABL3.MIDDLE_NAME as 'РћС‚С‡РµСЃС‚РІРѕ',
+--#TABL3.ORG_NAME as 'РџРѕРґСЂР°Р·РґРµР»РµРЅРёРµ' ,
+-- ACCGROUP.ACCGROUP_NAME as 'Р“СЂСѓРїРїР° РґРѕСЃС‚СѓРїР°'
+--FROM #TABL3 left outer join   ACCGROUP
+--ON #TABL3.ACCGROUP_ID=ACCGROUP.ACCGROUP_ID
+--order by last_name
+
+
+SELECT 
+	T1.aLastName AS 'Р¤Р°РјРёР»РёСЏ',
+	T1.aFirstName AS 'РРјСЏ ',
+	T1.aMiddleName AS 'РћС‚С‡РµСЃС‚РІРѕ',
+	ORGANIZATION.ORG_NAME AS 'РџРѕРґСЂР°Р·РґРµР»РµРЅРёРµ',
+	ACCGROUP.ACCGROUP_NAME as 'Р“СЂСѓРїРїР° РґРѕСЃС‚СѓРїР°'
+FROM 
+	@TABL1 AS T1 
+		left outer join ORGANIZATION ON T1.aOrgID=ORGANIZATION.ORG_ID
+		left outer join IDENTIFIER ON T1.aPrimID=IDENTIFIER.IDENTIFIER_ID
+			left outer join ACCGROUP ON IDENTIFIER.ACCGROUP_ID=ACCGROUP.ACCGROUP_ID
+		
+ORDER BY T1.aLastName
+</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Имя двери</Title>
+          <Name>aParam</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue />
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
+      <Code>0</Code>
+      <Name>ForParsec3\Объекты для импорта</Name>
+      <DateCreate>2014-06-30T14:59:48.3921357+04:00</DateCreate>
+      <DateLastModified>2014-07-15T00:00:00+04:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author />
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+-- РўР°Р±Р»РёС†Р° 1 
+-- Р’С‹Р±РѕСЂРєР° РѕР±СЉРµРєС‚РѕРІ РїРѕ С‚РёРїСѓ TYPE_ID Рё РїРѕ РљРѕСЂРЅРµРІРѕРјСѓ СѓР·Р»Сѓ РёРµСЂР°СЂС…РёРё (level=1)
+
+DECLARE @TH TABLE(aFolder1 varchar(255), aFolder2 varchar(255), aFolder3 varchar(255), aFolder4 varchar(255),  
+					aPID varchar(255), aLName varchar(255), aFName varchar(255), aPName varchar(255), aTab varchar(255), 
+					aCard varchar(255), aPin varchar(255), aDateFrom datetime, aDateTo datetime)
+INSERT INTO @TH
+SELECT 
+O2.ORG_NAME as aFolder1, 
+Null as aFolder2, 
+Null as aFolder3, 
+Null as aFolder4, 
+P2.PERS_ID as aPID, 
+P2.LAST_NAME as aLName, 
+P2.FIRST_NAME as aFName, 
+P2.MIDDLE_NAME as aPName, 
+P2.TAB_NUM as aTab, 
+IT.CODE as aCard, 
+IT.PIN as aPin, 
+IT.VALID_FROM as aValidFrom, 
+IT.VALID_TO as aValidTo
+FROM ORGANIZATION as O1
+	LEFT JOIN ORGANIZATION as O2 ON O1.ORG_ID = O2.PARENT_ID
+	LEFT JOIN PERSON as P2 ON P2.ORG_ID = O2.ORG_ID AND P2.TYPE_ID = #?pObjType?#
+	LEFT JOIN IDENTIFIER as IT ON IT.PERS_ID = P2.PERS_ID
+WHERE
+O1.Level=1 
+AND O1.ORG_ID = #?pOwnCode?#
+AND NOT P2.PERS_ID IS NULL
+
+UNION
+
+SELECT 
+O2.ORG_NAME as aFolder1, 
+O3.ORG_NAME as aFolder2, 
+Null as aFolder3, 
+Null as aFolder4, 
+P3.PERS_ID as aPID, 
+P3.LAST_NAME as aLName, 
+P3.FIRST_NAME as aFName, 
+P3.MIDDLE_NAME as aPName, 
+P3.TAB_NUM as aTab, 
+IT.CODE as aCard, 
+IT.PIN as aPin, 
+IT.VALID_FROM as aValidFrom, 
+IT.VALID_TO as aValidTo
+FROM ORGANIZATION as O1
+	LEFT JOIN ORGANIZATION as O2 ON O1.ORG_ID = O2.PARENT_ID
+	LEFT JOIN ORGANIZATION as O3 ON O2.ORG_ID = O3.PARENT_ID
+	LEFT JOIN PERSON as P3 ON P3.ORG_ID = O3.ORG_ID AND P3.TYPE_ID = #?pObjType?#
+	LEFT JOIN IDENTIFIER as IT ON IT.PERS_ID = P3.PERS_ID
+WHERE
+O1.Level=1 
+AND O1.ORG_ID = #?pOwnCode?#
+AND NOT P3.PERS_ID IS NULL
+
+UNION
+
+SELECT 
+O2.ORG_NAME as aFolder1, 
+O3.ORG_NAME as aFolder2, 
+O4.ORG_NAME as aFolder3, 
+Null as aFolder4, 
+P4.PERS_ID as aPID, 
+P4.LAST_NAME as aLName, 
+P4.FIRST_NAME as aFName, 
+P4.MIDDLE_NAME as aPName, 
+P4.TAB_NUM as aTab, 
+IT.CODE as aCard, 
+IT.PIN as aPin, 
+IT.VALID_FROM as aValidFrom, 
+IT.VALID_TO as aValidTo
+FROM ORGANIZATION as O1
+	LEFT JOIN ORGANIZATION as O2 ON O1.ORG_ID = O2.PARENT_ID
+	LEFT JOIN ORGANIZATION as O3 ON O2.ORG_ID = O3.PARENT_ID
+	LEFT JOIN ORGANIZATION as O4 ON O3.ORG_ID = O4.PARENT_ID
+	LEFT JOIN PERSON as P4 ON P4.ORG_ID = O4.ORG_ID AND P4.TYPE_ID = #?pObjType?#
+	LEFT JOIN IDENTIFIER as IT ON IT.PERS_ID = P4.PERS_ID
+WHERE
+O1.Level=1 
+AND O1.ORG_ID = #?pOwnCode?#
+AND NOT P4.PERS_ID IS NULL
+
+UNION
+
+SELECT 
+O2.ORG_NAME as aFolder1, 
+O3.ORG_NAME as aFolder2, 
+O4.ORG_NAME as aFolder3, 
+O5.ORG_NAME as aFolder4, 
+P5.PERS_ID as aPID, 
+P5.LAST_NAME as aLName, 
+P5.FIRST_NAME as aFName, 
+P5.MIDDLE_NAME as aPName, 
+P5.TAB_NUM as aTab, 
+IT.CODE as aCard, 
+IT.PIN as aPin, 
+IT.VALID_FROM as aValidFrom, 
+IT.VALID_TO as aValidTo
+FROM ORGANIZATION as O1
+	LEFT JOIN ORGANIZATION as O2 ON O1.ORG_ID = O2.PARENT_ID
+	LEFT JOIN ORGANIZATION as O3 ON O2.ORG_ID = O3.PARENT_ID
+	LEFT JOIN ORGANIZATION as O4 ON O3.ORG_ID = O4.PARENT_ID
+	LEFT JOIN ORGANIZATION as O5 ON O4.ORG_ID = O5.PARENT_ID
+	LEFT JOIN PERSON as P5 ON P5.ORG_ID = O5.ORG_ID AND P5.TYPE_ID = #?pObjType?#
+	LEFT JOIN IDENTIFIER as IT ON IT.PERS_ID = P5.PERS_ID
+WHERE
+O1.Level=1 
+AND O1.ORG_ID = #?pOwnCode?#
+AND NOT P5.PERS_ID IS NULL
+
+ORDER BY 1, 2, 3, 4, 5, 6, 7
+
+-- PROP PERSON
+-- Р”РµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ
+DECLARE @BD TABLE(aPID varchar(255), aBDay datetime)
+INSERT INTO @BD
+SELECT
+FF.PERS_ID as aPID, 
+CASE WHEN NOT FF.EXTRA_FIELD_VALUE IS NULL THEN CAST(FF.EXTRA_FIELD_VALUE as datetime) ELSE NULL END as aBDay
+FROM
+EXTRA_FIELD_VALUE as FF 
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+					--INNER JOIN EXTRA_FIELD_GROUP as GG ON GG.OWNER_ID = TT.FIELD_TEMPLATE_OWNER
+WHERE
+TT.TYPE_ID LIKE #?pObjType?# and TT.FIELD_TEMPLATE_ID IN('5DD6F9BB-ECE6-40EE-AB33-0597AD784469', '26E4ACB9-1483-4D2E-86C7-552621A4E5E0', '204E32C6-60BD-48EA-9894-39E35315F792')
+
+-- РњРµСЃС‚Рѕ СЂРѕР¶РґРµРЅРёСЏ
+DECLARE @BP TABLE(aPID varchar(255), aBPlace varchar(255))
+INSERT INTO @BP
+SELECT
+FF.PERS_ID as aPID, 
+CAST(FF.EXTRA_FIELD_VALUE as varchar(255)) as aBPlace
+FROM
+	EXTRA_FIELD_VALUE as FF
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+					--INNER JOIN EXTRA_FIELD_GROUP as GG ON GG.OWNER_ID = TT.FIELD_TEMPLATE_OWNER
+WHERE
+TT.TYPE_ID LIKE #?pObjType?# and TT.FIELD_TEMPLATE_ID IN('35DFD1E1-0BF0-477E-AF09-59081494D6AF', '2A33384C-AF62-4DC3-96C0-F053FB2E1C69')
+
+-- Р”РѕРєСѓРјРµРЅС‚ - СЃРµСЂРёСЏ
+DECLARE @DS TABLE(aPID varchar(255), aSer varchar(255))
+INSERT INTO @DS
+SELECT
+FF.PERS_ID as aPID, 
+CAST(FF.EXTRA_FIELD_VALUE as varchar(255)) as aSer
+FROM
+	EXTRA_FIELD_VALUE as FF
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+WHERE
+TT.TYPE_ID LIKE #?pObjType?# and TT.FIELD_TEMPLATE_ID IN('E13EC06B-426B-4286-890F-208E720F9804', '32FE3BA5-5A9A-49DD-8386-3BE165954308', '30000D80-A6C3-4192-94B9-8A51163C2822')
+
+-- Р”РѕРєСѓРјРµРЅС‚ - РЅРѕРјРµСЂ
+DECLARE @DN TABLE(aPID varchar(255), aNumber varchar(255))
+INSERT INTO @DN
+SELECT
+FF.PERS_ID as aPID, 
+CAST(FF.EXTRA_FIELD_VALUE as varchar(255)) as aNumber
+FROM
+	EXTRA_FIELD_VALUE as FF
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+WHERE
+TT.TYPE_ID LIKE #?pObjType?# and TT.FIELD_TEMPLATE_ID IN('C7023C33-79DB-4BFB-AAAB-4EF088614137', '57187620-F7C9-4A78-8BCB-975EEF519367', 'F9C6EE9F-C532-49E9-B256-F177F7CECCF8')
+
+-- Р”РѕРєСѓРјРµРЅС‚ - РљРµРј РІС‹РґР°РЅ
+/*DECLARE @DV TABLE(aPID varchar(255), aUVD varchar(255))
+INSERT INTO @DV
+SELECT
+FF.PERS_ID as aPID, 
+CAST(FF.EXTRA_FIELD_VALUE as varchar(255)) as aUVD
+FROM
+	EXTRA_FIELD_VALUE as FF
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+
+WHERE
+TT.TYPE_ID LIKE #pObjType?# and TT.FIELD_TEMPLATE_ID IN('AADBAB93-8CFF-4CB1-9537-1CE05C79E5F9', 'EAFF96E7-2177-4129-8518-9EB37A09BC88', '')*/
+
+-- Р”РѕРєСѓРјРµРЅС‚ - РљРѕРіРґР° РІС‹РґР°РЅ
+DECLARE @DD TABLE(aPID varchar(255), aDateDoc varchar(255))
+INSERT INTO @DD
+SELECT
+FF.PERS_ID as aPID, 
+CASE WHEN NOT FF.EXTRA_FIELD_VALUE IS NULL THEN CAST(FF.EXTRA_FIELD_VALUE as varchar(255)) ELSE NULL END as aDateDoc
+FROM
+	EXTRA_FIELD_VALUE as FF
+				INNER JOIN EXTRA_FIELD_TEMPLATE as TT ON TT.FIELD_TEMPLATE_ID = FF.FIELD_TEMPLATE_ID
+
+WHERE
+TT.TYPE_ID LIKE #?pObjType?# and TT.FIELD_TEMPLATE_ID IN ('94C4656D-54AA-4C05-9247-7BB0F0622440', 'ECF5664B-1799-4754-8299-C81C54B1492A', '39C167C6-A33F-442A-BB1C-D09440E66707')
+
+
+-- Р’Р«РҐРћР”РќРђРЇ РўРђР‘Р›РР¦Рђ
+SELECT 
+TH.aFolder1, 
+TH.aFolder2, 
+TH.aFolder3, 
+TH.aFolder4, 
+TH.aPID, 
+TH.aLName, 
+TH.aFName, 
+TH.aPName, 
+TH.aTab, 
+TH.aCard, 
+TH.aPin, 
+TH.aDateFrom, 
+TH.aDateTo, 
+CASE WHEN NOT BD.aBDay IS NULL THEN CONVERT(varchar(10), BD.aBDay, 104) ELSE '' END as aBDay, 
+BP.aBPlace, 
+DS.aSer,
+DN.aNumber, 
+--DV.aUVD, 
+DD.aDateDoc 
+--CASE WHEN NOT DD.aDateDoc IS NULL THEN CONVERT(varchar(10), DD.aDateDoc, 104) ELSE '' END as aDateDoc
+
+FROM @TH as TH
+		LEFT JOIN @BD as BD ON BD.aPID = TH.aPID
+		LEFT JOIN @BP as BP ON BP.aPID = TH.aPID
+		LEFT JOIN @DS as DS ON DS.aPID = TH.aPID
+		LEFT JOIN @DN as DN ON DN.aPID = TH.aPID
+		--LEFT JOIN @DV as DV ON DV.aPID = TH.aPID
+		LEFT JOIN @DD as DD ON DD.aPID = TH.aPID
+ORDER BY 2,3,4
+
+
+
+
+		</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Организация</Title>
+          <Name>pOwnCode</Name>
+          <Type>StrSelectList</Type>
+          <Inset>false</Inset>
+          <CurrentValue>a49ceba6-29f9-4bb3-be0a-32cb5a85b806:Клуб ЛУЖКИ</CurrentValue>
+          <DefaultValue />
+          <SelectValue>SELECT OO.ORG_ID, OO.ORG_NAME
+FROM dbo.ORGANIZATION as OO
+WHERE
+OO.ORG_NAME &lt;&gt; '' AND OO.Level = 1
+ORDER BY OO.ORG_NAME</SelectValue>
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>Объекты</Title>
+          <Name>pObjType</Name>
+          <Type>StrSelectList</Type>
+          <Inset>false</Inset>
+          <CurrentValue>b573219c-5c66-4359-890b-75bc6ba24f4f:b573219c-5c66-4359-890b-75bc6ba24f4f</CurrentValue>
+          <DefaultValue />
+          <SelectValue>SELECT DISTINCT TYPE_ID, TYPE_ID
+FROM dbo.PERSON
+</SelectValue>
+        </Param>
+      </Params>
+    </Query>
+  </Queries>
+</Session>
