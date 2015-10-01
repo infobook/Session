@@ -388,6 +388,153 @@ ORDER BY 2
       </Params>
     </Query>
     <Query>
+      <Code>100</Code>
+      <Name>dirSpyhole\Запрос для программы отслеживания ввода инициаторов</Name>
+      <DateCreate>2015-08-26T15:51:49.8867187+03:00</DateCreate>
+      <DateLastModified>2015-09-18T00:00:00+03:00</DateLastModified>
+      <Hidden>false</Hidden>
+      <Author>MaryM</Author>
+      <Note />
+      <Text>SET DATEFORMAT dmy
+
+DECLARE @dtFrom datetime
+SET @dtFrom = #?pDateFrom?#
+
+-- Формируем таблицу заявок, ограниченных по параметру дате
+DECLARE @BPVISIT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
+aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
+INSERT INTO @BPVISIT
+SELECT
+-- Дата заказа
+DATEADD(hour, 3, VR.REQUEST_DATE) as aDateReq, 
+-- ФИО посетителя
+PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME as aVisitor, 
+-- ID посетителя
+VR.VISITOR_ID as aVisitorID, 
+VR.VISIT_PURPOSE as aVisitInit,  
+-- Дата начала действия заявки
+-- начало дня
+CAST(CONVERT(varchar(10), VR.ADMIT_START, 104) as datetime) as aAdmitFromDate, 
+--DATEADD(hour, 3, VR.ADMIT_START) as aAdmitFromDate, 
+-- Дата окончания действия заявки
+DATEADD(hour, 3, VR.ADMIT_END) as aAdmitToDate, 
+VR.REQUEST_NUM as aRequestNum, 
+-- Статус заявки
+-- 0 - Ожидание согласования
+-- 1 - Согласованв
+-- 2 - Отклонена
+-- 3 - Выдан пропуск
+-- 4 - Закрыта
+VR.REQUEST_STATUS as aStatusReq, 
+CASE WHEN VR.REQUEST_STATUS = 0 THEN 'ожидание согласования'
+		WHEN VR.REQUEST_STATUS = 1 THEN 'согласована'
+			WHEN VR.REQUEST_STATUS = 2 THEN 'отклонена'
+				WHEN VR.REQUEST_STATUS = 3 THEN 'выдан пропуск'
+					WHEN VR.REQUEST_STATUS = 4 THEN 'закрыта'
+ELSE '' END as aStatusReqName
+
+FROM 
+[Parsec3].dbo.[VISITOR_REQUEST] as VR
+	INNER JOIN [Parsec3].dbo.[Person] as PV ON PV.PERS_ID = VR.VISITOR_ID
+
+WHERE
+@dtFrom &lt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_START), 104) as datetime) 
+
+--- выдаем строки, в которых не встречается наших искомых слов
+DECLARE @TT TABLE
+(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
+aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
+aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
+
+INSERT INTO @TT
+SELECT aDateReq, aVisitor, aVisitorID, aVisitInit, aAdmitFromDate, aAdmitToDate, aRequestNum, aStatusReq, aStatusReqName
+FROM @BPVISIT
+WHERE
+LEN(ISNULL(aVisitInit, '')) = 0
+OR
+NOT (ISNULL(aVisitInit, '') LIKE 
+			(CASE WHEN LEN('#?pStr1?#') &gt; 0 THEN '%#?pStr1?#%'
+					ELSE '%'
+						END)
+OR ISNULL(aVisitInit, '') LIKE 
+			(CASE WHEN LEN('#?pStr2?#') &gt; 0 THEN '%#?pStr2?#%'
+					ELSE '%'
+						END)
+OR ISNULL(aVisitInit, '') LIKE 
+			(CASE WHEN LEN('#?pStr3?#') &gt; 0 THEN '%#?pStr3?#%'
+					ELSE '%'
+						END)
+OR ISNULL(aVisitInit, '') LIKE
+			(CASE WHEN LEN('#?pStr4?#') &gt; 0 THEN '%#?pStr4?#%'
+					ELSE '%'
+						END)
+)
+
+SELECT 
+'Заявка № ' + CAST(aRequestNum as varchar(255)) + ' [' + aVisitor + '] не содержит ключевых слов' AS [Список предупреждений]
+FROM @TT
+ORDER BY aDateReq ASC
+
+--SELECT aDateReq, aVisitor, aVisitorID, aVisitInit, aAdmitFromDate, aAdmitToDate, aRequestNum, aStatusReq, aStatusReqName
+--FROM @BPVISIT</Text>
+      <XSLT />
+      <ImageName />
+      <Params>
+        <Param>
+          <Number>1</Number>
+          <Title>Дата с:</Title>
+          <Name>pDateFrom</Name>
+          <Type>Date</Type>
+          <Inset>false</Inset>
+          <CurrentValue>18.09.2015</CurrentValue>
+          <DefaultValue>ToDay</DefaultValue>
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>2</Number>
+          <Title>Строка1</Title>
+          <Name>pStr1</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>главному</CurrentValue>
+          <DefaultValue>главному</DefaultValue>
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>3</Number>
+          <Title>Строка2</Title>
+          <Name>pStr2</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>ремонт</CurrentValue>
+          <DefaultValue>ремонт</DefaultValue>
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>4</Number>
+          <Title>Строка3</Title>
+          <Name>pStr3</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue>жена</CurrentValue>
+          <DefaultValue>жена</DefaultValue>
+          <SelectValue />
+        </Param>
+        <Param>
+          <Number>5</Number>
+          <Title>Строка4</Title>
+          <Name>pStr4</Name>
+          <Type>String</Type>
+          <Inset>true</Inset>
+          <CurrentValue />
+          <DefaultValue>ларца</DefaultValue>
+          <SelectValue />
+        </Param>
+      </Params>
+    </Query>
+    <Query>
       <Code>0</Code>
       <Name>Input_Output</Name>
       <DateCreate>2010-06-02T12:46:20.8646032+03:00</DateCreate>
@@ -2423,151 +2570,6 @@ SELECT
     </Query>
     <Query>
       <Code>0</Code>
-      <Name>Запрос для программы отслеживания ввода инициаторов</Name>
-      <DateCreate>2015-08-26T15:51:49.8867187+03:00</DateCreate>
-      <DateLastModified>2015-08-28T00:00:00+03:00</DateLastModified>
-      <Hidden>false</Hidden>
-      <Author>MaryM</Author>
-      <Note />
-      <Text>SET DATEFORMAT dmy
-
-DECLARE @dtFrom datetime
-SET @dtFrom = #?pDateFrom?#
-
--- Формируем таблицу заявок, ограниченных по параметру дате
-DECLARE @BPVISIT TABLE
-(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
-aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
-aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
-INSERT INTO @BPVISIT
-SELECT
--- Дата заказа
-DATEADD(hour, 3, VR.REQUEST_DATE) as aDateReq, 
--- ФИО посетителя
-PV.LAST_NAME+' '+PV.FIRST_NAME+' '+PV.MIDDLE_NAME as aVisitor, 
--- ID посетителя
-VR.VISITOR_ID as aVisitorID, 
-VR.VISIT_PURPOSE as aVisitInit,  
--- Дата начала действия заявки
--- начало дня
-CAST(CONVERT(varchar(10), VR.ADMIT_START, 104) as datetime) as aAdmitFromDate, 
---DATEADD(hour, 3, VR.ADMIT_START) as aAdmitFromDate, 
--- Дата окончания действия заявки
-DATEADD(hour, 3, VR.ADMIT_END) as aAdmitToDate, 
-VR.REQUEST_NUM as aRequestNum, 
--- Статус заявки
--- 0 - Ожидание согласования
--- 1 - Согласованв
--- 2 - Отклонена
--- 3 - Выдан пропуск
--- 4 - Закрыта
-VR.REQUEST_STATUS as aStatusReq, 
-CASE WHEN VR.REQUEST_STATUS = 0 THEN 'ожидание согласования'
-		WHEN VR.REQUEST_STATUS = 1 THEN 'согласована'
-			WHEN VR.REQUEST_STATUS = 2 THEN 'отклонена'
-				WHEN VR.REQUEST_STATUS = 3 THEN 'выдан пропуск'
-					WHEN VR.REQUEST_STATUS = 4 THEN 'закрыта'
-ELSE '' END as aStatusReqName
-
-FROM 
-[Parsec3].dbo.[VISITOR_REQUEST] as VR
-	INNER JOIN [Parsec3].dbo.[Person] as PV ON PV.PERS_ID = VR.VISITOR_ID
-
-WHERE
-@dtFrom &lt;= CAST(CONVERT(varchar(10), DATEADD(hour, 3, VR.ADMIT_START), 104) as datetime) 
-
---- выдаем строки, в которых не встречается наших искомых слов
-DECLARE @TT TABLE
-(aDateReq datetime, aVisitor varchar(255), aVisitorID uniqueidentifier,  
-aVisitInit varchar(255), aAdmitFromDate datetime, aAdmitToDate datetime, 
-aRequestNum int, aStatusReq int, aStatusReqName varchar(255))
-
-INSERT INTO @TT
-SELECT aDateReq, aVisitor, aVisitorID, aVisitInit, aAdmitFromDate, aAdmitToDate, aRequestNum, aStatusReq, aStatusReqName
-FROM @BPVISIT
-WHERE
-LEN(ISNULL(aVisitInit, '')) = 0
-OR
-(ISNULL(aVisitInit, '') NOT LIKE 
-			(CASE WHEN LEN('#?pStr1?#') &gt; 0 THEN '%#?pStr1?#%'
-					ELSE ''
-						END)
-AND ISNULL(aVisitInit, '') NOT LIKE 
-			(CASE WHEN LEN('#?pStr2?#') &gt; 0 THEN '%#?pStr2?#%'
-					ELSE ''
-						END)
-AND ISNULL(aVisitInit, '') NOT LIKE 
-			(CASE WHEN LEN('#?pStr3?#') &gt; 0 THEN '%#?pStr3?#%'
-					ELSE ''
-						END)
-AND ISNULL(aVisitInit, '') NOT LIKE
-			(CASE WHEN LEN('#?pStr4?#') &gt; 0 THEN '%#?pStr4?#%'
-					ELSE ''
-						END)
-)
-
-SELECT 
-'Заявка № ' + CAST(aRequestNum as varchar(255)) + ' [' + aVisitor + '] не содержит ключевых слов'
-FROM @TT
-ORDER BY aDateReq ASC
-</Text>
-      <XSLT />
-      <ImageName />
-      <Params>
-        <Param>
-          <Number>1</Number>
-          <Title>Дата с:</Title>
-          <Name>pDateFrom</Name>
-          <Type>Date</Type>
-          <Inset>false</Inset>
-          <CurrentValue>03.08.2015</CurrentValue>
-          <DefaultValue />
-          <SelectValue />
-        </Param>
-        <Param>
-          <Number>2</Number>
-          <Title>Строка1</Title>
-          <Name>pStr1</Name>
-          <Type>String</Type>
-          <Inset>true</Inset>
-          <CurrentValue>мо</CurrentValue>
-          <DefaultValue />
-          <SelectValue />
-        </Param>
-        <Param>
-          <Number>3</Number>
-          <Title>Строка2</Title>
-          <Name>pStr2</Name>
-          <Type>String</Type>
-          <Inset>true</Inset>
-          <CurrentValue />
-          <DefaultValue />
-          <SelectValue />
-        </Param>
-        <Param>
-          <Number>4</Number>
-          <Title>Строка3</Title>
-          <Name>pStr3</Name>
-          <Type>String</Type>
-          <Inset>true</Inset>
-          <CurrentValue />
-          <DefaultValue />
-          <SelectValue />
-        </Param>
-        <Param>
-          <Number>5</Number>
-          <Title>Строка4</Title>
-          <Name>pStr4</Name>
-          <Type>String</Type>
-          <Inset>true</Inset>
-          <CurrentValue />
-          <DefaultValue />
-          <SelectValue />
-        </Param>
-      </Params>
-    </Query>
-    <Query>
-      <Code>0</Code>
       <Name>Отчет о посетителях за период (инициатор - карта)</Name>
       <DateCreate>2015-07-22T16:16:15.234375+03:00</DateCreate>
       <DateLastModified>2015-09-08T00:00:00+03:00</DateLastModified>
@@ -3589,8 +3591,7 @@ ORDER BY 2
           <Inset>true</Inset>
           <CurrentValue>жена</CurrentValue>
           <DefaultValue />
-          <SelectValue>
-</SelectValue>
+          <SelectValue />
         </Param>
         <Param>
           <Number>6</Number>
